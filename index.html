@@ -31,6 +31,11 @@
       color: var(--text-light);
     }
     .navbar {
+      position: fixed;
+      top: 30px;
+      left: 0; right: 0;
+      margin: 0 auto;
+      z-index: 1001;
       background: var(--primary);
       color: #fff;
       display: flex;
@@ -38,7 +43,21 @@
       justify-content: space-between;
       padding: 0 18px;
       height:71px;
-      box-shadow: 0 2px 16px rgba(60,94,219,0.16);
+      max-width: 990px;
+      border-radius: 20px;
+      box-shadow: 0 4px 32px #3c5edb44;
+      animation: nav-float-in 0.7s cubic-bezier(.65,-0.02,.54,1.16);
+    }
+    @keyframes nav-float-in {
+      0% { opacity: 0; transform: translateY(-40px) scale(0.95);}
+      100% { opacity: 1; transform: translateY(0) scale(1);}
+    }
+    @media (max-width:1050px) {
+      .navbar { max-width:98vw; left:1vw; right:1vw;}
+    }
+    @media (max-width:700px) {
+      .navbar { max-width:100vw; border-radius:0; left:0; right:0; top:0;}
+      body { padding-top: 71px;}
     }
     .logo {
       font-size:2.1em; font-weight:900; letter-spacing:1.5px; display:flex; align-items:center; gap:10px;
@@ -50,27 +69,41 @@
       width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2em;
       box-shadow: 0 1px 7px #fff5;
     }
-    .nav-links button {
+    .nav-links button, .nav-links a {
       background: none; border: none; color: #fff; font-size: 1.04em; margin-left: 12px; cursor: pointer;
       font-weight:600; padding: 7px 16px; border-radius:6px; transition: background .2s, color .2s;
+      text-decoration: none;
+      display: inline-block;
     }
-    .nav-links button:hover, .nav-links button.active {
+    .nav-links button:hover, .nav-links button.active, .nav-links a:hover {
       background: #fff; color: var(--primary);
     }
-    .music-btn {
-      background: var(--music); color: #b07300; border: none; border-radius: 50%; width:38px; height:38px; font-size:1.3em; margin-left:8px; cursor:pointer; transition: background .2s;
-      box-shadow: 0 2px 10px #ffd35855;
-      display: inline-flex; align-items: center; justify-content: center;
-      outline: 2px solid transparent;
+    .whatsapp-btn {
+      background: #25d366;
+      color: #fff;
+      font-weight: 700;
+      padding: 8px 17px;
+      border-radius: 7px;
+      font-size: 1.01em;
+      margin-left: 14px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: background .18s, color .18s;
+      border: none;
+      box-shadow: 0 2px 10px #25d36633;
     }
-    .music-btn.on { outline: 2px solid var(--primary);}
-    .music-btn:hover { background: #fff7c9;}
+    .whatsapp-btn:hover { background: #1ebe5c; color: #fff;}
     .hero {
-      max-width: 900px; margin: 42px auto 30px auto; text-align: center; padding: 38px 16px 34px 16px;
+      max-width: 900px; margin: 110px auto 30px auto; text-align: center; padding: 38px 16px 34px 16px;
       background: linear-gradient(100deg,#f9fbff 65%, #e3ebff 100%);
       border-radius: 18px; box-shadow: var(--shadow);
       display:flex; flex-direction:column; align-items:center;
       position:relative; overflow:hidden;
+    }
+    @media (max-width:700px) {
+      .hero {margin-top: 20px;}
     }
     .hero h1 {
       font-size: 2.35em; color: var(--primary); font-weight: 800; letter-spacing: 1.2px;
@@ -159,7 +192,7 @@
     }
     .admin-panel.active { display:block; }
     #postForm { display:flex; flex-direction:column; gap:13px; }
-    #postForm input, #postForm textarea {
+    #postForm input, #postForm textarea, #postForm select {
       font-size:1.08em; padding:11px 14px; border-radius:7px; border:1px solid #d1d9f4; background:#fafbff; resize:none;
     }
     #postForm button {
@@ -229,7 +262,7 @@
     body.dark .gallery { background: var(--dark-bg);}
     body.dark .hero h1 { color: var(--secondary);}
     body.dark .navbar { background: var(--dark-card);}
-    body.dark .nav-links button { color:var(--secondary);}
+    body.dark .nav-links button, body.dark .nav-links a { color:var(--secondary);}
     body.dark .post-desc { color: var(--text-light);}
     body.dark .admin-panel {background: var(--dark-card); color:var(--text-light);}
     body.dark .modal {background: var(--dark-card);}
@@ -263,7 +296,7 @@
       <button onclick="showRandom()">Random</button>
       <button id="darkModeBtn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
       <button onclick="showAbout()">About</button>
-      <button class="music-btn" id="musicBtn" title="Toggle music">🎵</button>
+      <a class="whatsapp-btn" href="https://wa.me/2348123456789?text=Hi%2C%20I%20want%20to%20sponsor%20content%20on%20Dolce!" target="_blank" rel="noopener noreferrer"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" style="vertical-align:middle;margin-right:3px;">Chat Dolce</a>
       <button id="adminBtn" onclick="showAdminPanel()">Admin</button>
     </span>
   </nav>
@@ -320,7 +353,8 @@
     const APPWRITE_DB_ID = "684f0a0f001a46d72f20";
     const APPWRITE_COLLECTION_ID = "684f0a22002bef8ed873";
     const BUCKET_ID = "684f0d8b002f36d77e67";
-    const ADMIN_EMAIL = "supremealpha04@gmail.com" "supremeamerapplications@gmail.com;
+    // Only ONE admin:
+    const ADMIN_EMAIL = "supremealpha04@gmail.com";
     const POSTS_PER_PAGE = 9;
     const CATEGORIES = ["Fails", "Dance", "Pets", "Family", "Random"];
 
@@ -551,23 +585,6 @@
       document.getElementById("gallery").scrollIntoView({behavior:"smooth"});
     }
 
-    // --- Music Toggle ---
-    const musicBtn = document.getElementById("musicBtn");
-    const bgMusic = document.getElementById("bgMusic");
-    musicBtn.onclick = function() {
-      if(musicOn) {
-        bgMusic.pause();
-        musicOn = false;
-        musicBtn.classList.remove('on');
-      } else {
-        bgMusic.play().then(()=>{musicOn=true; musicBtn.classList.add('on');})
-        .catch(()=>{alert("Please interact with page to enable music.");});
-      }
-    };
-    bgMusic.onended = ()=>{musicOn=false; musicBtn.classList.remove('on');};
-    bgMusic.onpause = ()=>{musicOn=false; musicBtn.classList.remove('on');};
-    bgMusic.onplay = ()=>{musicOn=true; musicBtn.classList.add('on');};
-
     // --- About Modal Glow-Up ---
     function showAbout() {
       document.getElementById("modal-root").innerHTML = `
@@ -588,7 +605,7 @@
       document.body.style.overflow = "";
     }
 
-    // --- Admin Auth & Panel (unchanged) ---
+    // --- Admin Auth & Panel ---
     function showAdminPanel() {
       if (isAdmin) {
         document.getElementById("adminPanel").classList.add("active");
