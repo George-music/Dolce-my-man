@@ -16,13 +16,15 @@
       --dark-card: #23243b;
       --text: #1a2233;
       --text-light: #e3e7fa;
+      --shadow: 0 8px 38px #3c5edb13;
+      --music: #ffd358;
     }
     html, body { margin:0; padding:0; min-height:100vh; }
     body {
       font-family: 'Inter', Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      transition: background .2s, color .2s;
+      transition: background .3s cubic-bezier(.77,0,.18,1), color .3s cubic-bezier(.77,0,.18,1);
     }
     body.dark {
       background: var(--dark-bg);
@@ -35,8 +37,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 18px;
-      height:68px;
-      box-shadow: 0 2px 16px rgba(60,94,219,0.09);
+      height:71px;
+      box-shadow: 0 2px 16px rgba(60,94,219,0.16);
     }
     .logo {
       font-size:2.1em; font-weight:900; letter-spacing:1.5px; display:flex; align-items:center; gap:10px;
@@ -49,21 +51,37 @@
       box-shadow: 0 1px 7px #fff5;
     }
     .nav-links button {
-      background: none; border: none; color: #fff; font-size: 1.04em; margin-left: 12px; cursor: pointer; 
+      background: none; border: none; color: #fff; font-size: 1.04em; margin-left: 12px; cursor: pointer;
       font-weight:600; padding: 7px 16px; border-radius:6px; transition: background .2s, color .2s;
     }
     .nav-links button:hover, .nav-links button.active {
       background: #fff; color: var(--primary);
     }
+    .music-btn {
+      background: var(--music); color: #b07300; border: none; border-radius: 50%; width:38px; height:38px; font-size:1.3em; margin-left:8px; cursor:pointer; transition: background .2s;
+      box-shadow: 0 2px 10px #ffd35855;
+      display: inline-flex; align-items: center; justify-content: center;
+      outline: 2px solid transparent;
+    }
+    .music-btn.on { outline: 2px solid var(--primary);}
+    .music-btn:hover { background: #fff7c9;}
     .hero {
-      max-width: 900px; margin: 42px auto 30px auto; text-align: center; padding: 34px 16px 32px 16px;
-      background: linear-gradient(90deg,#f9fbff 60%, #e3ebff 100%);
-      border-radius: 18px; box-shadow: 0 6px 28px #3c5edb14;
+      max-width: 900px; margin: 42px auto 30px auto; text-align: center; padding: 38px 16px 34px 16px;
+      background: linear-gradient(100deg,#f9fbff 65%, #e3ebff 100%);
+      border-radius: 18px; box-shadow: var(--shadow);
       display:flex; flex-direction:column; align-items:center;
+      position:relative; overflow:hidden;
     }
     .hero h1 {
       font-size: 2.35em; color: var(--primary); font-weight: 800; letter-spacing: 1.2px;
       margin-bottom: 10px; line-height:1.13;
+      text-shadow: 0 3px 16px #e3ebff;
+      animation: popIn .7s cubic-bezier(.65,-0.02,.54,1.16) 1;
+    }
+    @keyframes popIn {
+      0% {transform:scale(.8) translateY(30px); opacity:0;}
+      80%{transform:scale(1.04) translateY(-2px);}
+      100% {transform:scale(1) translateY(0); opacity:1;}
     }
     .hero p {
       color: #333; font-size: 1.13em; margin-bottom: 18px; font-weight: 500;
@@ -74,6 +92,17 @@
       transition: background .2s, color .2s;
     }
     .hero .cta:hover { background: var(--text); color:var(--secondary);}
+    .categories {
+      display: flex; gap:12px; align-items:center; justify-content:center;
+      margin:24px auto 0 auto; flex-wrap:wrap; max-width:800px;
+    }
+    .cat-btn {
+      background: #fff; border:1.6px solid var(--primary); color: var(--primary); border-radius:21px;
+      font-size: 1.01em; font-weight:700; padding:6px 22px; cursor:pointer;
+      transition: background .14s, color .17s, border .17s;
+      box-shadow: 0 1px 7px #3c5edb14;
+    }
+    .cat-btn.active, .cat-btn:hover { background: var(--primary); color: #fff;}
     .trending-bar {
       display: flex; gap:10px; align-items:center;
       background: var(--secondary); color: #b07300; font-weight:700;
@@ -83,34 +112,50 @@
     .trending-bar span { margin-right:10px; }
     .trending-bar a { color:#c08c00; text-decoration:underline;}
     .gallery {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:28px;
-      max-width:1200px; margin:30px auto 38px auto; padding:0 12px;
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); gap:32px;
+      max-width:1200px; margin:34px auto 38px auto; padding:0 12px;
     }
+    .card-anim { transition: box-shadow .22s, transform .21s cubic-bezier(.77,0,.18,1);}
     .post-card {
-      background: #fff; border-radius:14px; box-shadow:0 3px 18px #3c5edb0c;
+      background: #fff; border-radius:21px; box-shadow: var(--shadow);
       overflow:hidden; display:flex; flex-direction:column; position:relative;
-      transition: box-shadow .18s, background .18s;
+      cursor:pointer; will-change: transform;
+      transition: box-shadow .23s cubic-bezier(.77,0,.18,1), transform .23s cubic-bezier(.77,0,.18,1);
     }
+    .post-card:hover { box-shadow:0 16px 48px #3c5edb33; transform:scale(1.028) rotateZ(-1.4deg);}
+    .post-card:active { transform:scale(.98);}
     .post-card.dark { background: var(--dark-card);}
     .post-media {
       width:100%; background: #efeffb; display: flex; align-items:center; justify-content:center; min-height: 210px;
       position:relative;
+      overflow:hidden;
     }
     .post-media img, .post-media video {
-      max-width:100%; max-height:320px; border-radius:10px; margin: 0 auto; display:block; box-shadow:0 2px 9px #3c5edb12;
+      max-width:100%; max-height:320px; border-radius:12px; margin: 0 auto; display:block; box-shadow:0 2px 9px #3c5edb12;
+      transition:transform .19s cubic-bezier(.77,0,.18,1);
     }
+    .post-card:hover .post-media img, .post-card:hover .post-media video { transform:scale(1.045);}
     .post-media video { background:#222; }
-    .post-content { padding: 19px 18px 14px 18px; }
+    .post-content { padding: 21px 18px 17px 18px; position:relative;}
     .post-title { font-weight:800; font-size:1.18em; color:var(--primary); }
     .post-desc { font-size:1.04em; color:#333; margin-top:7px; }
-    .post-actions { display:flex; gap:12px; margin:15px 0 0 0; flex-wrap:wrap; }
-    .action-btn { background:#f6f6fa; border:none; border-radius:6px; font-size:1.18em; padding:7px 15px; cursor:pointer; transition:.1s; }
+    .post-actions { display:flex; gap:14px; margin:17px 0 0 0; flex-wrap:wrap; }
+    .reaction-btn {
+      background:#fff; border:1.7px solid #eee; border-radius:50%; font-size:1.38em; padding:6px 8px; cursor:pointer;
+      transition:.13s; box-shadow:0 1px 7px #3c5edb12;
+      position:relative; min-width:44px; min-height:44px;
+      display:inline-flex; align-items:center; justify-content:center;
+    }
+    .reaction-btn.active, .reaction-btn.liked { border:2.4px solid var(--primary); background:var(--accent);}
+    .reaction-count { font-size:.97em; color:var(--primary); margin-left:5px; font-weight:700;}
+    .action-btn {
+      background:#f6f6fa; border:none; border-radius:6px; font-size:1.13em; padding:7px 15px; cursor:pointer; transition:.1s;
+      font-weight:600;
+    }
     .action-btn:hover { background:var(--secondary); color:var(--primary);}
-    .action-btn.liked { color:var(--danger);}
-    .reaction-count { font-size:.99em; color:var(--primary); margin-left:5px;}
     .admin-panel {
       display:none; max-width:430px; margin:38px auto 0 auto; background:#fff; padding:28px 24px 25px 24px;
-      border-radius:12px; box-shadow:0 3px 17px #3c5edb0d; 
+      border-radius:12px; box-shadow:0 3px 17px #3c5edb0d;
     }
     .admin-panel.active { display:block; }
     #postForm { display:flex; flex-direction:column; gap:13px; }
@@ -142,12 +187,42 @@
     .modal-backdrop {
       position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(26,34,51,0.18); z-index:999;
       display:flex; align-items:center; justify-content:center;
+      animation: fadeIn .33s;
     }
+    @keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
     .modal {
-      background:#fff; border-radius:15px; max-width:95vw; max-height:93vh; overflow-y:auto;
-      box-shadow:0 12px 48px 0 rgba(49,103,230,0.16); padding:34px 34px 28px 34px; position:relative;
-      min-width:320px;
+      background:#fff; border-radius:19px; max-width:95vw; max-height:93vh; overflow-y:auto;
+      box-shadow:0 16px 60px 0 rgba(49,103,230,0.22); padding:39px 39px 31px 39px; position:relative;
+      min-width:320px; animation: popIn .6s cubic-bezier(.65,-0.02,.54,1.16) 1;
     }
+    .modal .about-emoji {
+      font-size:3.2em; filter: drop-shadow(0 3px 16px var(--accent));
+      animation: bounce 1.5s infinite alternate cubic-bezier(.77,0,.18,1);
+      margin-bottom:10px;
+    }
+    @keyframes bounce { 
+      from{transform:translateY(0);}
+      to{transform:translateY(-14px) scale(1.11);}
+    }
+    .modal .about-story {
+      font-size:1.13em; margin-bottom:18px; font-weight:500; color:var(--primary);
+    }
+    .loading-overlay {
+      position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(245,246,250,0.88); z-index:9999;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      font-size:2.5em;
+      color:var(--primary);
+      transition: opacity .23s;
+      pointer-events: none;
+      user-select:none;
+    }
+    .loading-emoji {
+      animation: spin 1.2s linear infinite;
+      font-size:2.5em;
+      margin-bottom:8px;
+    }
+    @keyframes spin {100%{transform: rotate(360deg);}}
+    .loading-msg {font-size:1.14em; color:var(--primary);}
     /* Dark mode overrides */
     body.dark .post-card { background: var(--dark-card); color:var(--text-light);}
     body.dark .post-title { color:var(--secondary);}
@@ -159,6 +234,7 @@
     body.dark .admin-panel {background: var(--dark-card); color:var(--text-light);}
     body.dark .modal {background: var(--dark-card);}
     body.dark .modal h2, body.dark .modal h3 {color: var(--secondary);}
+    .music-btn {transition:background .2s, outline .2s;}
     @media (max-width:900px) {
       .gallery {grid-template-columns:1fr;}
       .hero {padding:20px 5vw;}
@@ -185,8 +261,9 @@
       <button onclick="scrollToGallery()">Gallery</button>
       <button onclick="showTrending()">Trending</button>
       <button onclick="showRandom()">Random</button>
-      <button onclick="toggleDarkMode()" id="darkModeBtn" title="Toggle dark mode">🌙</button>
+      <button id="darkModeBtn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
       <button onclick="showAbout()">About</button>
+      <button class="music-btn" id="musicBtn" title="Toggle music">🎵</button>
       <button id="adminBtn" onclick="showAdminPanel()">Admin</button>
     </span>
   </nav>
@@ -195,10 +272,15 @@
     <section class="hero">
       <h1>Welcome to Dolce!</h1>
       <p>The funniest images & videos from WhatsApp statuses, now online.<br>
-        Laugh, share, and enjoy endless fun with Dolce and friends!</p>
+        Laugh, react, and enjoy endless fun with Dolce and friends!</p>
       <button class="cta" onclick="scrollToGallery()">See Gallery</button>
     </section>
+    <div class="categories" id="categories"></div>
     <section id="trendingBar" class="trending-bar"></section>
+    <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+      <span class="loading-emoji" id="loadingEmoji">🎵</span>
+      <div class="loading-msg" id="loadingMsg">Loading the funniest stuff...</div>
+    </div>
     <section id="gallery" class="gallery"></section>
     <div class="ad-slot ad-infeed">[Ad here]</div>
     <div id="loadMoreWrapper" class="load-more-bar">
@@ -211,6 +293,14 @@
       <form id="postForm" enctype="multipart/form-data">
         <input type="text" id="postTitle" placeholder="Title" required>
         <textarea id="postDesc" placeholder="Description (optional)"></textarea>
+        <select id="postCategory" required>
+          <option value="">Pick a category</option>
+          <option value="Fails">Fails</option>
+          <option value="Dance">Dance</option>
+          <option value="Pets">Pets</option>
+          <option value="Family">Family</option>
+          <option value="Random">Random</option>
+        </select>
         <input type="file" id="postMedia" accept="image/*,video/*" multiple required>
         <button type="submit">Post</button>
         <div id="formMsg"></div>
@@ -219,9 +309,12 @@
     </section>
   </main>
   <div id="modal-root"></div>
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b2f6a1b3.mp3" type="audio/mp3">
+  </audio>
   <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
   <script>
-    // ---- Dolce Appwrite Config: Fill with your project details ----
+    // --- Appwrite Config ---
     const APPWRITE_ENDPOINT = "https://fra.cloud.appwrite.io/v1";
     const APPWRITE_PROJECT = "684f099b000e8e402349";
     const APPWRITE_DB_ID = "684f0a0f001a46d72f20";
@@ -229,6 +322,7 @@
     const BUCKET_ID = "684f0d8b002f36d77e67";
     const ADMIN_EMAIL = "supremealpha04@gmail.com";
     const POSTS_PER_PAGE = 9;
+    const CATEGORIES = ["Fails", "Dance", "Pets", "Family", "Random"];
 
     const client = new Appwrite.Client();
     client.setEndpoint(APPWRITE_ENDPOINT).setProject(APPWRITE_PROJECT);
@@ -241,9 +335,35 @@
     let currentPage = 0;
     let isAdmin = false;
     let trendingPosts = [];
+    let currentCategory = "All";
+    let musicOn = false;
+
+    // --- Loading Spinner ---
+    function showLoading(msg = "Loading the funniest stuff...") {
+      document.getElementById("loadingMsg").innerText = msg;
+      document.getElementById("loadingOverlay").style.display = "";
+      document.getElementById("loadingEmoji").innerText = ["🎵","😂","😎","🔥","🎶","😄"][Math.floor(Math.random()*6)];
+    }
+    function hideLoading() {
+      document.getElementById("loadingOverlay").style.display = "none";
+    }
+
+    // --- Categories/Filters ---
+    function renderCategories() {
+      const cats = ["All", ...CATEGORIES];
+      document.getElementById("categories").innerHTML = cats.map(cat =>
+        `<button class="cat-btn${cat===currentCategory?' active':''}" onclick="selectCategory('${cat}')">${cat}</button>`
+      ).join("");
+    }
+    window.selectCategory = function(cat) {
+      currentCategory = cat;
+      renderCategories();
+      renderGallery();
+    }
 
     // --- Gallery & Trending ---
     async function loadPosts({append=false}={}) {
+      showLoading();
       try {
         const res = await db.listDocuments(
           APPWRITE_DB_ID,
@@ -263,37 +383,44 @@
         } else {
           document.getElementById("loadMoreWrapper").style.display = "";
         }
+        hideLoading();
       } catch (e) {
         document.getElementById("gallery").innerHTML = "<div style='color:#e53935;font-weight:700;'>Failed to load content.</div>";
+        hideLoading();
       }
     }
 
     function renderGallery() {
       const gallery = document.getElementById("gallery");
+      let filtered = posts;
+      if(currentCategory && currentCategory !== "All") {
+        filtered = posts.filter(p => (p.category||"Random") === currentCategory);
+      }
       gallery.innerHTML = "";
-      posts.forEach(post => {
+      filtered.forEach(post => {
         let mediaHtml = "";
         if (post.type === "image" && post.media && post.media[0]) {
           mediaHtml = `<img src="${post.media[0]}" alt="${post.title}">`;
         } else if (post.type === "video" && post.media && post.media[0]) {
           mediaHtml = `<video src="${post.media[0]}" controls></video>`;
         }
-        const reactions = post.reactions || {like: 0, laugh: 0, fire: 0};
+        const reactions = post.reactions || {laugh:0,surprise:0,heart:0};
         const isLiked = likes[post.$id];
         const card = document.createElement("div");
-        card.className = "post-card" + (document.body.classList.contains("dark") ? " dark" : "");
+        card.className = "post-card card-anim" + (document.body.classList.contains("dark") ? " dark" : "");
         card.innerHTML = `
           <div class="post-media">${mediaHtml}</div>
           <div class="post-content">
             <div class="post-title">${post.title}</div>
             ${post.description ? `<div class="post-desc">${post.description}</div>` : ""}
             <div class="post-actions">
-              <button class="action-btn${isLiked==='like'?" liked":""}" onclick="reactToPost('${post.$id}','like')">👍 <span class="reaction-count">${reactions.like||0}</span></button>
-              <button class="action-btn${isLiked==='laugh'?" liked":""}" onclick="reactToPost('${post.$id}','laugh')">😂 <span class="reaction-count">${reactions.laugh||0}</span></button>
-              <button class="action-btn${isLiked==='fire'?" liked":""}" onclick="reactToPost('${post.$id}','fire')">🔥 <span class="reaction-count">${reactions.fire||0}</span></button>
+              <button class="reaction-btn${isLiked==='laugh'?" liked":""}" onclick="reactToPost('${post.$id}','laugh')">😂<span class="reaction-count">${reactions.laugh||0}</span></button>
+              <button class="reaction-btn${isLiked==='surprise'?" liked":""}" onclick="reactToPost('${post.$id}','surprise')">😮<span class="reaction-count">${reactions.surprise||0}</span></button>
+              <button class="reaction-btn${isLiked==='heart'?" liked":""}" onclick="reactToPost('${post.$id}','heart')">❤️<span class="reaction-count">${reactions.heart||0}</span></button>
               <button class="action-btn" onclick="sharePost('${post.$id}')">📤 Share</button>
               <button class="action-btn" onclick="downloadMedia('${post.media[0]}','${post.title}')">⬇️</button>
             </div>
+            <div style="margin-top:8px;font-size:.99em;color:#3c5edb;">${post.category||"Random"}</div>
           </div>
         `;
         gallery.appendChild(card);
@@ -301,10 +428,9 @@
     }
 
     function renderTrendingBar() {
-      // Trending by sum of reactions (likes + laugh + fire)
       trendingPosts = [...posts].sort((a, b) => {
-        const ra = a.reactions ? (a.reactions.like||0)+(a.reactions.laugh||0)+(a.reactions.fire||0) : 0;
-        const rb = b.reactions ? (b.reactions.like||0)+(b.reactions.laugh||0)+(b.reactions.fire||0) : 0;
+        const ra = a.reactions ? (a.reactions.laugh||0)+(a.reactions.surprise||0)+(a.reactions.heart||0) : 0;
+        const rb = b.reactions ? (b.reactions.laugh||0)+(b.reactions.surprise||0)+(b.reactions.heart||0) : 0;
         return rb - ra;
       }).slice(0, 3);
       const bar = document.getElementById("trendingBar");
@@ -321,8 +447,8 @@
       const idx = posts.findIndex(post => post.$id === postId);
       if (idx !== -1 && cards[idx]) {
         cards[idx].scrollIntoView({behavior: "smooth", block: "center"});
-        cards[idx].style.boxShadow = "0 0 0 5px var(--secondary)";
-        setTimeout(()=>cards[idx].style.boxShadow="", 1700);
+        cards[idx].style.boxShadow = "0 0 0 7px var(--secondary)";
+        setTimeout(()=>cards[idx].style.boxShadow="", 1400);
       }
     }
 
@@ -334,23 +460,25 @@
 
     // --- Random Post Feature ---
     window.showRandomPost = function() {
-      if (!posts.length) return;
-      const idx = Math.floor(Math.random()*posts.length);
-      highlightPost(posts[idx].$id);
+      const filtered = currentCategory && currentCategory !== "All"
+        ? posts.filter(p => (p.category||"Random") === currentCategory)
+        : posts;
+      if (!filtered.length) return;
+      const idx = Math.floor(Math.random()*filtered.length);
+      highlightPost(filtered[idx].$id);
     };
     function showRandom() { showRandomPost(); }
 
     // --- Reactions ---
     window.reactToPost = async function(postId, type) {
-      if (likes[postId]) return; // Prevent multiple reactions per session
+      if (likes[postId]) return;
       const post = posts.find(p=>p.$id===postId);
       if (!post) return;
-      post.reactions = post.reactions || {like:0,laugh:0,fire:0};
+      post.reactions = post.reactions || {laugh:0,surprise:0,heart:0};
       post.reactions[type] = (post.reactions[type]||0)+1;
       likes[postId] = type;
       localStorage.setItem("dolceLikes", JSON.stringify(likes));
       renderGallery();
-      // Save to backend (no auth, so use function or allow update by any for demo)
       try {
         await db.updateDocument(
           APPWRITE_DB_ID,
@@ -360,7 +488,6 @@
         );
       } catch {}
     };
-    // Load reactions from localStorage
     try { likes = JSON.parse(localStorage.getItem("dolceLikes")||"{}"); } catch{}
 
     // --- Social Sharing ---
@@ -407,8 +534,12 @@
       document.body.classList.toggle("dark");
       renderGallery();
       localStorage.setItem("dolceDark", document.body.classList.contains("dark") ? "1" : "");
+      document.getElementById('darkModeBtn').innerText = document.body.classList.contains('dark') ? '☀️' : '🌙';
     };
-    if(localStorage.getItem("dolceDark")==="1") document.body.classList.add("dark");
+    if(localStorage.getItem("dolceDark")==="1") {
+      document.body.classList.add("dark");
+      document.getElementById('darkModeBtn').innerText = '☀️';
+    }
 
     // --- Trending Button ---
     function showTrending() {
@@ -419,15 +550,34 @@
     function scrollToGallery() {
       document.getElementById("gallery").scrollIntoView({behavior:"smooth"});
     }
+
+    // --- Music Toggle ---
+    const musicBtn = document.getElementById("musicBtn");
+    const bgMusic = document.getElementById("bgMusic");
+    musicBtn.onclick = function() {
+      if(musicOn) {
+        bgMusic.pause();
+        musicOn = false;
+        musicBtn.classList.remove('on');
+      } else {
+        bgMusic.play().then(()=>{musicOn=true; musicBtn.classList.add('on');})
+        .catch(()=>{alert("Please interact with page to enable music.");});
+      }
+    };
+    bgMusic.onended = ()=>{musicOn=false; musicBtn.classList.remove('on');};
+    bgMusic.onpause = ()=>{musicOn=false; musicBtn.classList.remove('on');};
+    bgMusic.onplay = ()=>{musicOn=true; musicBtn.classList.add('on');};
+
+    // --- About Modal Glow-Up ---
     function showAbout() {
       document.getElementById("modal-root").innerHTML = `
         <div class="modal-backdrop" onclick="closeModal(event)">
-          <div class="modal" onclick="event.stopPropagation()" style="background:#fff; border-radius:15px; max-width:400px; margin:40px auto; padding:28px;">
-            <button style="position:absolute;top:9px;right:14px;font-size:1.6rem;background:none;border:none;cursor:pointer;" onclick="closeModal(event)">&times;</button>
-            <h2 style="color:var(--primary);margin-bottom:14px;">About Dolce</h2>
-            <p style="font-size:1.13em;">Dolce is your best source for viral, funny, and trending WhatsApp statuses. Like, react, download, and share with your friends. Try dark mode for night laughs!
-            <br><br>Ads help keep the fun alive. Enjoy!</p>
-            <button style="margin-top:18px;background:var(--primary);color:#fff;padding:11px 22px;border:none;border-radius:8px;font-weight:800;" onclick="closeModal(event)">Close</button>
+          <div class="modal" onclick="event.stopPropagation()">
+            <div class="about-emoji">😎</div>
+            <h2 style="color:var(--primary);margin-bottom:14px;">Meet Dolce</h2>
+            <div class="about-story">Once upon a status, Dolce started posting memes that made the internet ROFL. Now, Dolce’s gallery brings you the very best of WhatsApp hilarity—curated for fun, filtered with love, and sprinkled with good vibes. <b>Laugh, react, and share the joy!</b></div>
+            <div style="font-size:1.04em; margin-bottom:18px;">P.S. Don’t forget to try dark mode and the music button for a true Dolce experience 🎶</div>
+            <button style="background:var(--primary);color:#fff;padding:13px 26px;border:none;border-radius:10px;font-weight:800;" onclick="closeModal(event)">Close</button>
           </div>
         </div>
       `;
@@ -438,7 +588,7 @@
       document.body.style.overflow = "";
     }
 
-    // --- Admin Auth & Panel ---
+    // --- Admin Auth & Panel (unchanged) ---
     function showAdminPanel() {
       if (isAdmin) {
         document.getElementById("adminPanel").classList.add("active");
@@ -492,8 +642,9 @@
       const title = document.getElementById("postTitle").value.trim();
       const description = document.getElementById("postDesc").value.trim();
       const files = document.getElementById("postMedia").files;
-      if (!title || files.length === 0) {
-        document.getElementById("formMsg").innerText = "Title and media are required.";
+      const category = document.getElementById("postCategory").value || "Random";
+      if (!title || files.length === 0 || !category) {
+        document.getElementById("formMsg").innerText = "Title, category, and media are required.";
         return;
       }
       document.getElementById("formMsg").innerText = "Uploading...";
@@ -512,7 +663,8 @@
           description,
           media: urls,
           type,
-          reactions: {like:0,laugh:0,fire:0},
+          category,
+          reactions: {laugh:0,surprise:0,heart:0},
           createdAt: new Date().toISOString()
         });
         document.getElementById("formMsg").innerText = "Posted!";
@@ -527,6 +679,7 @@
 
     // --- Init ---
     (async function(){
+      renderCategories();
       try {
         const session = await account.get();
         if (session && session.email === ADMIN_EMAIL) {
@@ -536,7 +689,6 @@
       } catch {}
       currentPage = 0;
       loadPosts();
-      if(localStorage.getItem("dolceDark")==="1") document.body.classList.add("dark");
     })();
   </script>
 </body>
