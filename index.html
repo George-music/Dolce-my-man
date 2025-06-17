@@ -32,7 +32,7 @@
     }
     .navbar {
       position: fixed;
-      top: 30px;
+      top: 0;
       left: 0; right: 0;
       margin: 0 auto;
       z-index: 1001;
@@ -43,21 +43,15 @@
       justify-content: space-between;
       padding: 0 18px;
       height:71px;
-      max-width: 990px;
-      border-radius: 20px;
+      max-width: 100vw;
+      border-radius: 0;
       box-shadow: 0 4px 32px #3c5edb44;
       animation: nav-float-in 0.7s cubic-bezier(.65,-0.02,.54,1.16);
+      transition: height 0.3s;
     }
     @keyframes nav-float-in {
       0% { opacity: 0; transform: translateY(-40px) scale(0.95);}
       100% { opacity: 1; transform: translateY(0) scale(1);}
-    }
-    @media (max-width:1050px) {
-      .navbar { max-width:98vw; left:1vw; right:1vw;}
-    }
-    @media (max-width:700px) {
-      .navbar { max-width:100vw; border-radius:0; left:0; right:0; top:0;}
-      body { padding-top: 71px;}
     }
     .logo {
       font-size:2.1em; font-weight:900; letter-spacing:1.5px; display:flex; align-items:center; gap:10px;
@@ -68,6 +62,13 @@
       color: var(--primary);
       width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2em;
       box-shadow: 0 1px 7px #fff5;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      transition: max-height 0.3s;
     }
     .nav-links button, .nav-links a {
       background: none; border: none; color: #fff; font-size: 1.04em; margin-left: 12px; cursor: pointer;
@@ -95,6 +96,104 @@
       box-shadow: 0 2px 10px #25d36633;
     }
     .whatsapp-btn:hover { background: #1ebe5c; color: #fff;}
+
+    /* Hamburger styles */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 38px;
+      height: 38px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
+      z-index: 1500;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 26px;
+      height: 4px;
+      margin: 4px 0;
+      background: #fff;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    @media (max-width: 900px) {
+      .gallery {grid-template-columns:1fr;}
+      .hero {padding:20px 5vw;}
+      .admin-panel {width:98vw;}
+      .modal {padding:20px 5vw 18px 5vw;}
+    }
+    @media (max-width: 700px) {
+      .navbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0;
+        top: 0;
+        height: auto;
+        border-radius: 0;
+        max-width: 100vw;
+      }
+      .logo {
+        justify-content: center;
+        padding: 13px 0;
+      }
+      .nav-toggle {
+        display: flex;
+        position: absolute;
+        right: 16px;
+        top: 16px;
+      }
+      .nav-links {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        width: 100%;
+        background: var(--primary);
+        padding-top: 0;
+        padding-bottom: 8px;
+        margin: 0;
+        box-shadow: none;
+        position: static;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s;
+      }
+      .nav-links.open {
+        max-height: 500px; /* enough to show all items */
+        transition: max-height 0.4s;
+      }
+      .nav-links button, .nav-links a {
+        margin: 0;
+        margin-top: 6px;
+        margin-left: 0;
+        width: 90vw;
+        max-width: 420px;
+        align-self: center;
+        font-size: 1.14em;
+        padding: 13px 0;
+        border-radius: 7px;
+      }
+      .whatsapp-btn {
+        width: 90vw; max-width: 420px; margin: 10px auto 0 auto;
+      }
+      body { padding-top: 71px;} /* keep for hero spacing */
+    }
+    @media (max-width:600px) {
+      .main { padding:0 2px;}
+      .gallery {grid-template-columns:1fr;}
+      .post-content {padding:13px 7px 10px 7px;}
+      .hero { padding:12px 2vw;}
+      .hero h1 { font-size:1.3em;}
+      .modal {padding:12px 2vw 10px 2vw; min-width:unset;}
+      .modal h2 { font-size:1.18em;}
+      .admin-panel {width:99vw; padding:13px 2vw;}
+      .random-btn {padding:12px 10vw;}
+    }
+
     .hero {
       max-width: 900px; margin: 110px auto 30px auto; text-align: center; padding: 38px 16px 34px 16px;
       background: linear-gradient(100deg,#f9fbff 65%, #e3ebff 100%);
@@ -268,29 +367,17 @@
     body.dark .modal {background: var(--dark-card);}
     body.dark .modal h2, body.dark .modal h3 {color: var(--secondary);}
     .music-btn {transition:background .2s, outline .2s;}
-    @media (max-width:900px) {
-      .gallery {grid-template-columns:1fr;}
-      .hero {padding:20px 5vw;}
-      .admin-panel {width:98vw;}
-      .modal {padding:20px 5vw 18px 5vw;}
-    }
-    @media (max-width:600px) {
-      .main { padding:0 2px;}
-      .gallery {grid-template-columns:1fr;}
-      .post-content {padding:13px 7px 10px 7px;}
-      .hero { padding:12px 2vw;}
-      .hero h1 { font-size:1.3em;}
-      .modal {padding:12px 2vw 10px 2vw; min-width:unset;}
-      .modal h2 { font-size:1.18em;}
-      .admin-panel {width:99vw; padding:13px 2vw;}
-      .random-btn {padding:12px 10vw;}
-    }
   </style>
 </head>
 <body>
   <nav class="navbar">
     <span class="logo"><span>😎</span> Dolce</span>
-    <span class="nav-links">
+    <button class="nav-toggle" aria-label="Open menu" onclick="toggleMobileNav()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <span class="nav-links" id="navLinks">
       <button onclick="scrollToGallery()">Gallery</button>
       <button onclick="showTrending()">Trending</button>
       <button onclick="showRandom()">Random</button>
@@ -347,6 +434,12 @@
   </audio>
   <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
   <script>
+    // Responsive mobile nav toggle
+    function toggleMobileNav() {
+      var links = document.getElementById('navLinks');
+      links.classList.toggle('open');
+    }
+
     // --- Appwrite Config ---
     const APPWRITE_ENDPOINT = "https://fra.cloud.appwrite.io/v1";
     const APPWRITE_PROJECT = "684f099b000e8e402349";
