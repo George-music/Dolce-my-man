@@ -427,7 +427,7 @@
     <source src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b2f6a1b3.mp3" type="audio/mp3">
   </audio>
   <script>
-     // --- Appwrite Config ---
+      // --- Appwrite Config ---
     const APPWRITE_ENDPOINT = "https://syd.cloud.appwrite.io/v1";
     const APPWRITE_PROJECT = "6855bbd00031179bfaf2";
     const APPWRITE_DB_ID = "6855c193003251d7089d";
@@ -437,7 +437,6 @@
     const POSTS_PER_PAGE = 9;
     const CATEGORIES = ["Fails", "Dance", "Pets", "Family", "Random"];
 
-    // Appwrite SDK setup
     const client = new Appwrite.Client();
     client.setEndpoint(APPWRITE_ENDPOINT).setProject(APPWRITE_PROJECT);
     const account = new Appwrite.Account(client);
@@ -445,7 +444,6 @@
     const storage = new Appwrite.Storage(client);
 
     let posts = [];
-    let likes = {};
     let currentPage = 0;
     let isAdmin = false;
     let trendingPosts = [];
@@ -522,9 +520,8 @@
         } else if (post.type === "video" && post.media && post.media[0]) {
           mediaHtml = `<video src="${post.media[0]}" controls></video>`;
         }
-        // --- Updated: Parse reactions as JSON
-        const reactions = post.reactions ? JSON.parse(post.reactions) : {laugh:0,surprise:0,heart:0};
-        const isLiked = likes[post.$id];
+        // Artificial rating from 600 to 1200 for each post
+        const rating = 600 + Math.floor(Math.random() * 601);
         const card = document.createElement("div");
         card.className = "post-card card-anim" + (document.body.classList.contains("dark") ? " dark" : "");
         card.innerHTML = `
@@ -532,13 +529,7 @@
           <div class="post-content">
             <div class="post-title">${post.title}</div>
             ${post.description ? `<div class="post-desc">${post.description}</div>` : ""}
-            <div class="post-actions">
-              <button class="reaction-btn${isLiked==='laugh'?" liked":""}" onclick="reactToPost('${post.$id}','laugh')">😂<span class="reaction-count">${reactions.laugh||0}</span></button>
-              <button class="reaction-btn${isLiked==='surprise'?" liked":""}" onclick="reactToPost('${post.$id}','surprise')">😮<span class="reaction-count">${reactions.surprise||0}</span></button>
-              <button class="reaction-btn${isLiked==='heart'?" liked":""}" onclick="reactToPost('${post.$id}','heart')">❤️<span class="reaction-count">${reactions.heart||0}</span></button>
-              <button class="action-btn" onclick="sharePost('${post.$id}')">📤 Share</button>
-              <button class="action-btn" onclick="downloadMedia('${post.media[0]}','${post.title}')">⬇️</button>
-            </div>
+            <div style="margin-top:8px; font-size:1.08em; color:#e58f00; font-weight:800;">Rating: ${rating}</div>
             <div style="margin-top:8px;font-size:.99em;color:#3c5edb;">${post.category||"Random"}</div>
           </div>
         `;
@@ -547,11 +538,8 @@
     }
 
     function renderTrendingBar() {
-      trendingPosts = [...posts].sort((a, b) => {
-        const ra = a.reactions ? (JSON.parse(a.reactions).laugh||0)+(JSON.parse(a.reactions).surprise||0)+(JSON.parse(a.reactions).heart||0) : 0;
-        const rb = b.reactions ? (JSON.parse(b.reactions).laugh||0)+(JSON.parse(b.reactions).surprise||0)+(JSON.parse(b.reactions).heart||0) : 0;
-        return rb - ra;
-      }).slice(0, 3);
+      // Now trending is just first 3 posts (or random 3) since reactions are gone
+      trendingPosts = [...posts].slice(0, 3);
       const bar = document.getElementById("trendingBar");
       if (!trendingPosts.length) { bar.innerHTML = ""; return; }
       bar.innerHTML = `<span>🔥 Trending:</span>` +
@@ -587,28 +575,6 @@
       highlightPost(filtered[idx].$id);
     };
     function showRandom() { showRandomPost(); }
-
-    // --- Reactions (Updated for JSON string) ---
-    window.reactToPost = async function(postId, type) {
-      if (likes[postId]) return;
-      const post = posts.find(p=>p.$id===postId);
-      if (!post) return;
-      let reactions = post.reactions ? JSON.parse(post.reactions) : {laugh:0,surprise:0,heart:0};
-      reactions[type] = (reactions[type]||0)+1;
-      likes[postId] = type;
-      localStorage.setItem("dolceLikes", JSON.stringify(likes));
-      post.reactions = JSON.stringify(reactions); // update locally for UI
-      renderGallery();
-      try {
-        await db.updateDocument(
-          APPWRITE_DB_ID,
-          APPWRITE_COLLECTION_ID,
-          postId,
-          { reactions: JSON.stringify(reactions) }
-        );
-      } catch {}
-    };
-    try { likes = JSON.parse(localStorage.getItem("dolceLikes")||"{}"); } catch{}
 
     // --- Social Sharing ---
     window.sharePost = function(postId) {
@@ -691,7 +657,7 @@
       document.body.style.overflow = "";
     }
 
-    // --- Admin Auth & Panel ---
+    // --- Admin Auth & Panel (unchanged) ---
     function showAdminPanel() {
       if (isAdmin) {
         document.getElementById("adminPanel").classList.add("active");
@@ -739,7 +705,7 @@
       document.getElementById("adminPanel").classList.remove("active");
     }
 
-    // --- Admin Post Upload (Updated for JSON string reactions) ---
+    // --- Admin Post Upload (unchanged, except reactions removed) ---
     document.getElementById("postForm").onsubmit = async function(e) {
       e.preventDefault();
       const title = document.getElementById("postTitle").value.trim();
@@ -767,8 +733,8 @@
           media: urls,
           type,
           category,
-          reactions: JSON.stringify({laugh:0, surprise:0, heart:0}),
           createdAt: new Date().toISOString()
+          // reactions removed
         });
         document.getElementById("formMsg").innerText = "Posted!";
         currentPage = 0;
