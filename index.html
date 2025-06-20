@@ -427,8 +427,7 @@
     <source src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b2f6a1b3.mp3" type="audio/mp3">
   </audio>
   <script>
-    // Responsive mobile nav toggle
-    function toggleMobileNav() {
+      function toggleMobileNav() {
       var links = document.getElementById('navLinks');
       links.classList.toggle('open');
     }
@@ -443,6 +442,7 @@
     const POSTS_PER_PAGE = 9;
     const CATEGORIES = ["Fails", "Dance", "Pets", "Family", "Random"];
 
+    // Appwrite SDK setup
     const client = new Appwrite.Client();
     client.setEndpoint(APPWRITE_ENDPOINT).setProject(APPWRITE_PROJECT);
     const account = new Appwrite.Account(client);
@@ -504,8 +504,13 @@
         }
         hideLoading();
       } catch (e) {
+        console.error("Failed to load posts:", e);
         document.getElementById("gallery").innerHTML = "<div style='color:#e53935;font-weight:700;'>Failed to load content.</div>";
         hideLoading();
+        // If 401, suggest the user check CORS or Appwrite project settings
+        if (e?.response?.status === 401) {
+          alert("Unauthorized (401): Please check your Appwrite project settings and CORS. Public read permissions must be enabled.");
+        }
       }
     }
 
@@ -782,16 +787,20 @@
     // --- Init ---
     (async function(){
       renderCategories();
+      // Only check for session/admin for admin panel, not for gallery
       try {
         const session = await account.get();
         if (session && ADMIN_EMAILS.includes(session.email)) {
           isAdmin = true;
           document.getElementById("adminPanel").classList.add("active");
         }
-      } catch {}
+      } catch (e) {
+        // not logged in, but that's fine for public viewing
+        isAdmin = false;
+      }
       currentPage = 0;
       loadPosts();
     })();
-  </script>
+</script>
 </body>
 </html>
