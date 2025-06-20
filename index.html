@@ -63,7 +63,6 @@
       width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2em;
       box-shadow: 0 1px 7px #fff5;
     }
-
     .nav-links {
       display: flex;
       align-items: center;
@@ -96,8 +95,6 @@
       box-shadow: 0 2px 10px #25d36633;
     }
     .whatsapp-btn:hover { background: #1ebe5c; color: #fff;}
-
-    /* Hamburger styles */
     .nav-toggle {
       display: none;
       flex-direction: column;
@@ -120,7 +117,6 @@
       border-radius: 2px;
       transition: 0.3s;
     }
-
     @media (max-width: 900px) {
       .gallery {grid-template-columns:1fr;}
       .hero {padding:20px 5vw;}
@@ -193,7 +189,6 @@
       .admin-panel {width:99vw; padding:13px 2vw;}
       .random-btn {padding:12px 10vw;}
     }
-
     .hero {
       max-width: 900px; margin: 110px auto 30px auto; text-align: center; padding: 38px 16px 34px 16px;
       background: linear-gradient(100deg,#f9fbff 65%, #e3ebff 100%);
@@ -315,7 +310,6 @@
       padding:13px 36px; cursor:pointer; letter-spacing:.5px;
     }
     #loadMoreBtn:hover { background: var(--text);}
-    /* Modal styles */
     .modal-backdrop {
       position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(26,34,51,0.18); z-index:999;
       display:flex; align-items:center; justify-content:center;
@@ -355,7 +349,6 @@
     }
     @keyframes spin {100%{transform: rotate(360deg);}}
     .loading-msg {font-size:1.14em; color:var(--primary);}
-    /* Dark mode overrides */
     body.dark .post-card { background: var(--dark-card); color:var(--text-light);}
     body.dark .post-title { color:var(--secondary);}
     body.dark .gallery { background: var(--dark-bg);}
@@ -368,6 +361,7 @@
     body.dark .modal h2, body.dark .modal h3 {color: var(--secondary);}
     .music-btn {transition:background .2s, outline .2s;}
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
 </head>
 <body>
   <nav class="navbar">
@@ -432,7 +426,6 @@
   <audio id="bgMusic" loop preload="auto">
     <source src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b2f6a1b3.mp3" type="audio/mp3">
   </audio>
-  <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
   <script>
     // Responsive mobile nav toggle
     function toggleMobileNav() {
@@ -446,8 +439,7 @@
     const APPWRITE_DB_ID = "684f0a0f001a46d72f20";
     const APPWRITE_COLLECTION_ID = "684f0a22002bef8ed873";
     const BUCKET_ID = "684f0d8b002f36d77e67";
-    // Only ONE admin:
-    const ADMIN_EMAIL = "supremealpha04@gmail.com" "emmyplumbing@gmail.com";
+    const ADMIN_EMAILS = ["supremealpha04@gmail.com", "emmyplumbing@gmail.com"];
     const POSTS_PER_PAGE = 9;
     const CATEGORIES = ["Fails", "Dance", "Pets", "Family", "Random"];
 
@@ -725,7 +717,7 @@
         e.preventDefault();
         const email = document.getElementById("loginEmail").value.trim();
         const password = document.getElementById("loginPassword").value;
-        if (email !== ADMIN_EMAIL) {
+        if (!ADMIN_EMAILS.includes(email)) {
           document.getElementById("loginMsg").innerText = "Not authorized.";
           return;
         }
@@ -792,7 +784,7 @@
       renderCategories();
       try {
         const session = await account.get();
-        if (session && session.email === ADMIN_EMAIL) {
+        if (session && ADMIN_EMAILS.includes(session.email)) {
           isAdmin = true;
           document.getElementById("adminPanel").classList.add("active");
         }
