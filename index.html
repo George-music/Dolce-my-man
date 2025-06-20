@@ -427,12 +427,7 @@
     <source src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b2f6a1b3.mp3" type="audio/mp3">
   </audio>
   <script>
-      function toggleMobileNav() {
-      var links = document.getElementById('navLinks');
-      links.classList.toggle('open');
-    }
-
-    // --- Appwrite Config ---
+     // --- Appwrite Config ---
     const APPWRITE_ENDPOINT = "https://syd.cloud.appwrite.io/v1";
     const APPWRITE_PROJECT = "6855bbd00031179bfaf2";
     const APPWRITE_DB_ID = "6855c193003251d7089d";
@@ -507,7 +502,6 @@
         console.error("Failed to load posts:", e);
         document.getElementById("gallery").innerHTML = "<div style='color:#e53935;font-weight:700;'>Failed to load content.</div>";
         hideLoading();
-        // If 401, suggest the user check CORS or Appwrite project settings
         if (e?.response?.status === 401) {
           alert("Unauthorized (401): Please check your Appwrite project settings and CORS. Public read permissions must be enabled.");
         }
@@ -528,7 +522,8 @@
         } else if (post.type === "video" && post.media && post.media[0]) {
           mediaHtml = `<video src="${post.media[0]}" controls></video>`;
         }
-        const reactions = post.reactions || {laugh:0,surprise:0,heart:0};
+        // --- Updated: Parse reactions as JSON
+        const reactions = post.reactions ? JSON.parse(post.reactions) : {laugh:0,surprise:0,heart:0};
         const isLiked = likes[post.$id];
         const card = document.createElement("div");
         card.className = "post-card card-anim" + (document.body.classList.contains("dark") ? " dark" : "");
@@ -553,8 +548,8 @@
 
     function renderTrendingBar() {
       trendingPosts = [...posts].sort((a, b) => {
-        const ra = a.reactions ? (a.reactions.laugh||0)+(a.reactions.surprise||0)+(a.reactions.heart||0) : 0;
-        const rb = b.reactions ? (b.reactions.laugh||0)+(b.reactions.surprise||0)+(b.reactions.heart||0) : 0;
+        const ra = a.reactions ? (JSON.parse(a.reactions).laugh||0)+(JSON.parse(a.reactions).surprise||0)+(JSON.parse(a.reactions).heart||0) : 0;
+        const rb = b.reactions ? (JSON.parse(b.reactions).laugh||0)+(JSON.parse(b.reactions).surprise||0)+(JSON.parse(b.reactions).heart||0) : 0;
         return rb - ra;
       }).slice(0, 3);
       const bar = document.getElementById("trendingBar");
@@ -593,22 +588,23 @@
     };
     function showRandom() { showRandomPost(); }
 
-    // --- Reactions ---
+    // --- Reactions (Updated for JSON string) ---
     window.reactToPost = async function(postId, type) {
       if (likes[postId]) return;
       const post = posts.find(p=>p.$id===postId);
       if (!post) return;
-      post.reactions = post.reactions || {laugh:0,surprise:0,heart:0};
-      post.reactions[type] = (post.reactions[type]||0)+1;
+      let reactions = post.reactions ? JSON.parse(post.reactions) : {laugh:0,surprise:0,heart:0};
+      reactions[type] = (reactions[type]||0)+1;
       likes[postId] = type;
       localStorage.setItem("dolceLikes", JSON.stringify(likes));
+      post.reactions = JSON.stringify(reactions); // update locally for UI
       renderGallery();
       try {
         await db.updateDocument(
           APPWRITE_DB_ID,
           APPWRITE_COLLECTION_ID,
           postId,
-          { reactions: post.reactions }
+          { reactions: JSON.stringify(reactions) }
         );
       } catch {}
     };
@@ -743,7 +739,7 @@
       document.getElementById("adminPanel").classList.remove("active");
     }
 
-    // --- Admin Post Upload ---
+    // --- Admin Post Upload (Updated for JSON string reactions) ---
     document.getElementById("postForm").onsubmit = async function(e) {
       e.preventDefault();
       const title = document.getElementById("postTitle").value.trim();
@@ -771,7 +767,7 @@
           media: urls,
           type,
           category,
-          reactions: {laugh:0,surprise:0,heart:0},
+          reactions: JSON.stringify({laugh:0, surprise:0, heart:0}),
           createdAt: new Date().toISOString()
         });
         document.getElementById("formMsg").innerText = "Posted!";
@@ -787,7 +783,6 @@
     // --- Init ---
     (async function(){
       renderCategories();
-      // Only check for session/admin for admin panel, not for gallery
       try {
         const session = await account.get();
         if (session && ADMIN_EMAILS.includes(session.email)) {
@@ -795,7 +790,6 @@
           document.getElementById("adminPanel").classList.add("active");
         }
       } catch (e) {
-        // not logged in, but that's fine for public viewing
         isAdmin = false;
       }
       currentPage = 0;
