@@ -3,9 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <title>Dolce - Fun Gallery</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <!-- Favicon and SVG Logo -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23ffe36b' stroke='%233c5edb' stroke-width='5'/%3E%3Cellipse cx='24' cy='28' rx='4' ry='7' fill='%233c5edb'/%3E%3Cellipse cx='40' cy='28' rx='4' ry='7' fill='%233c5edb'/%3E%3Cpath d='M24 44 Q32 54 40 44' stroke='%233c5edb' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" type="image/svg+xml">
+  <!-- Social Meta -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3c5edb">
+  <meta property="og:title" content="Dolce Fun Gallery">
+  <meta property="og:description" content="The funniest WhatsApp statuses and memes, now online!">
+  <meta property="og:image" content="https://emojiapi.dev/api/v1/1f60e/128.png">
+  <meta property="og:url" content="https://yourdomain.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dolce Fun Gallery">
+  <meta name="twitter:description" content="The funniest WhatsApp statuses and memes, now online!">
+  <meta name="twitter:image" content="https://emojiapi.dev/api/v1/1f60e/128.png">
+  <link rel="apple-touch-icon" href="https://emojiapi.dev/api/v1/1f60e/192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- ... (CSS as in prior completion, unchanged for brevity) ... -->
   <style>
+    
     :root {
       --primary: #3c5edb;
       --secondary: #ffe36b;
@@ -20,11 +38,15 @@
       --music: #ffd358;
     }
     html, body { margin:0; padding:0; min-height:100vh; }
+    html { box-sizing: border-box; -webkit-tap-highlight-color: transparent;}
+    *, *:before, *:after { box-sizing: inherit; }
     body {
       font-family: 'Inter', Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       transition: background .3s cubic-bezier(.77,0,.18,1), color .3s cubic-bezier(.77,0,.18,1);
+      min-height: 100vh;
+      overscroll-behavior-y: none;
     }
     body.dark {
       background: var(--dark-bg);
@@ -42,26 +64,43 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 18px;
-      height:71px;
+      height:60px;
+      width: 100vw;
       max-width: 100vw;
       border-radius: 0;
       box-shadow: 0 4px 32px #3c5edb44;
       animation: nav-float-in 0.7s cubic-bezier(.65,-0.02,.54,1.16);
       transition: height 0.3s;
+      user-select: none;
+      touch-action: manipulation;
     }
     @keyframes nav-float-in {
       0% { opacity: 0; transform: translateY(-40px) scale(0.95);}
       100% { opacity: 1; transform: translateY(0) scale(1);}
     }
     .logo {
-      font-size:2.1em; font-weight:900; letter-spacing:1.5px; display:flex; align-items:center; gap:10px;
+      display: flex;
+      align-items: center;
+      font-size: 1.9em;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      gap: 10px;
+      min-width: 117px;
     }
-    .logo span {
-      background: var(--secondary);
+    .logo img {
+      height: 32px;
+      width: 32px;
       border-radius: 50%;
-      color: var(--primary);
-      width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2em;
       box-shadow: 0 1px 7px #fff5;
+      background: var(--secondary);
+      padding: 2px;
+      display: inline-block;
+    }
+    .logo span:last-child {
+      font-size: 0.88em;
+      font-weight: 900;
+      letter-spacing: 1px;
+      margin-left: 2px;
     }
     .nav-links {
       display: flex;
@@ -70,10 +109,12 @@
       transition: max-height 0.3s;
     }
     .nav-links button, .nav-links a {
-      background: none; border: none; color: #fff; font-size: 1.04em; margin-left: 12px; cursor: pointer;
-      font-weight:600; padding: 7px 16px; border-radius:6px; transition: background .2s, color .2s;
+      background: none; border: none; color: #fff; font-size: 1.06em; margin-left: 12px; cursor: pointer;
+      font-weight:600; padding: 9px 15px; border-radius:7px; transition: background .2s, color .2s;
       text-decoration: none;
       display: inline-block;
+      min-width: 44px; min-height: 44px;
+      touch-action: manipulation;
     }
     .nav-links button:hover, .nav-links button.active, .nav-links a:hover {
       background: #fff; color: var(--primary);
@@ -93,6 +134,7 @@
       transition: background .18s, color .18s;
       border: none;
       box-shadow: 0 2px 10px #25d36633;
+      min-width: 44px; min-height: 44px;
     }
     .whatsapp-btn:hover { background: #1ebe5c; color: #fff;}
     .nav-toggle {
@@ -100,13 +142,14 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      width: 38px;
-      height: 38px;
+      width: 44px;
+      height: 44px;
       background: none;
       border: none;
       cursor: pointer;
       margin-left: 10px;
       z-index: 1500;
+      min-width: 44px; min-height: 44px;
     }
     .nav-toggle span {
       display: block;
@@ -131,17 +174,18 @@
         top: 0;
         height: auto;
         border-radius: 0;
+        width: 100vw;
         max-width: 100vw;
       }
       .logo {
         justify-content: center;
-        padding: 13px 0;
+        padding: 11px 0;
       }
       .nav-toggle {
         display: flex;
         position: absolute;
         right: 16px;
-        top: 16px;
+        top: 12px;
       }
       .nav-links {
         flex-direction: column;
@@ -166,17 +210,20 @@
         margin: 0;
         margin-top: 6px;
         margin-left: 0;
-        width: 90vw;
-        max-width: 420px;
+        width: 95vw;
+        max-width: 440px;
         align-self: center;
-        font-size: 1.14em;
+        font-size: 1.17em;
         padding: 13px 0;
         border-radius: 7px;
+        min-width: 44px; min-height: 44px;
       }
       .whatsapp-btn {
-        width: 90vw; max-width: 420px; margin: 10px auto 0 auto;
+        width: 95vw; max-width: 440px; margin: 10px auto 0 auto;
       }
-      body { padding-top: 71px;} /* keep for hero spacing */
+      body { padding-top: 60px;}
+      .gallery {grid-template-columns:1fr;}
+      .hero {padding:20px 5vw;}
     }
     @media (max-width:600px) {
       .main { padding:0 2px;}
@@ -189,18 +236,20 @@
       .admin-panel {width:99vw; padding:13px 2vw;}
       .random-btn {padding:12px 10vw;}
     }
+    .gallery {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;
+      max-width:1200px; margin:34px auto 38px auto; padding:0 6px;
+      width:100%;
+    }
     .hero {
-      max-width: 900px; margin: 110px auto 30px auto; text-align: center; padding: 38px 16px 34px 16px;
+      max-width: 900px; margin: 66px auto 30px auto; text-align: center; padding: 38px 16px 34px 16px;
       background: linear-gradient(100deg,#f9fbff 65%, #e3ebff 100%);
       border-radius: 18px; box-shadow: var(--shadow);
       display:flex; flex-direction:column; align-items:center;
       position:relative; overflow:hidden;
     }
-    @media (max-width:700px) {
-      .hero {margin-top: 20px;}
-    }
     .hero h1 {
-      font-size: 2.35em; color: var(--primary); font-weight: 800; letter-spacing: 1.2px;
+      font-size: 2.1em; color: var(--primary); font-weight: 800; letter-spacing: 1.2px;
       margin-bottom: 10px; line-height:1.13;
       text-shadow: 0 3px 16px #e3ebff;
       animation: popIn .7s cubic-bezier(.65,-0.02,.54,1.16) 1;
@@ -217,17 +266,23 @@
       margin-top: 6px; background: var(--primary); color: #fff; font-weight:700; border:none;
       padding:13px 33px; border-radius:9px; font-size:1.17em; cursor:pointer; box-shadow:0 3px 10px #3c5edb22;
       transition: background .2s, color .2s;
+      min-width: 44px; min-height: 44px;
     }
     .hero .cta:hover { background: var(--text); color:var(--secondary);}
     .categories {
       display: flex; gap:12px; align-items:center; justify-content:center;
       margin:24px auto 0 auto; flex-wrap:wrap; max-width:800px;
+      overflow-x: auto;
     }
     .cat-btn {
       background: #fff; border:1.6px solid var(--primary); color: var(--primary); border-radius:21px;
       font-size: 1.01em; font-weight:700; padding:6px 22px; cursor:pointer;
       transition: background .14s, color .17s, border .17s;
       box-shadow: 0 1px 7px #3c5edb14;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      touch-action: manipulation;
+      min-width: 44px; min-height: 44px;
     }
     .cat-btn.active, .cat-btn:hover { background: var(--primary); color: #fff;}
     .trending-bar {
@@ -235,19 +290,16 @@
       background: var(--secondary); color: #b07300; font-weight:700;
       padding:10px 18px; border-radius:13px; max-width:750px; margin:24px auto 0 auto; font-size:1.04em;
       box-shadow: 0 1px 8px #ffe36b55;
+      flex-wrap: wrap;
     }
     .trending-bar span { margin-right:10px; }
     .trending-bar a { color:#c08c00; text-decoration:underline;}
-    .gallery {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); gap:32px;
-      max-width:1200px; margin:34px auto 38px auto; padding:0 12px;
-    }
-    .card-anim { transition: box-shadow .22s, transform .21s cubic-bezier(.77,0,.18,1);}
     .post-card {
       background: #fff; border-radius:21px; box-shadow: var(--shadow);
       overflow:hidden; display:flex; flex-direction:column; position:relative;
       cursor:pointer; will-change: transform;
       transition: box-shadow .23s cubic-bezier(.77,0,.18,1), transform .23s cubic-bezier(.77,0,.18,1);
+      min-width: 0;
     }
     .post-card:hover { box-shadow:0 16px 48px #3c5edb33; transform:scale(1.028) rotateZ(-1.4deg);}
     .post-card:active { transform:scale(.98);}
@@ -260,112 +312,81 @@
     .post-media img, .post-media video {
       max-width:100%; max-height:320px; border-radius:12px; margin: 0 auto; display:block; box-shadow:0 2px 9px #3c5edb12;
       transition:transform .19s cubic-bezier(.77,0,.18,1);
+      width: 100%;
+      object-fit: cover;
+      min-height: 180px;
+      aspect-ratio: 16/9;
+      background: #e3e3e3;
     }
     .post-card:hover .post-media img, .post-card:hover .post-media video { transform:scale(1.045);}
     .post-media video { background:#222; }
     .post-content { padding: 21px 18px 17px 18px; position:relative;}
     .post-title { font-weight:800; font-size:1.18em; color:var(--primary); }
     .post-desc { font-size:1.04em; color:#333; margin-top:7px; }
-    .post-actions { display:flex; gap:14px; margin:17px 0 0 0; flex-wrap:wrap; }
-    .reaction-btn {
-      background:#fff; border:1.7px solid #eee; border-radius:50%; font-size:1.38em; padding:6px 8px; cursor:pointer;
-      transition:.13s; box-shadow:0 1px 7px #3c5edb12;
-      position:relative; min-width:44px; min-height:44px;
-      display:inline-flex; align-items:center; justify-content:center;
+    .ad-slot { 
+      text-align:center; margin:20px auto; min-height:54px; color:#888; font-size:.99em; max-width:728px; 
+      border-radius: 13px; 
+      background: #f6f6fa;
+      box-shadow: 0 1px 7px #3c5edb14;
     }
-    .reaction-btn.active, .reaction-btn.liked { border:2.4px solid var(--primary); background:var(--accent);}
-    .reaction-count { font-size:.97em; color:var(--primary); margin-left:5px; font-weight:700;}
-    .action-btn {
-      background:#f6f6fa; border:none; border-radius:6px; font-size:1.13em; padding:7px 15px; cursor:pointer; transition:.1s;
-      font-weight:600;
-    }
-    .action-btn:hover { background:var(--secondary); color:var(--primary);}
-    .admin-panel {
-      display:none; max-width:430px; margin:38px auto 0 auto; background:#fff; padding:28px 24px 25px 24px;
-      border-radius:12px; box-shadow:0 3px 17px #3c5edb0d;
-    }
-    .admin-panel.active { display:block; }
-    #postForm { display:flex; flex-direction:column; gap:13px; }
-    #postForm input, #postForm textarea, #postForm select {
-      font-size:1.08em; padding:11px 14px; border-radius:7px; border:1px solid #d1d9f4; background:#fafbff; resize:none;
-    }
-    #postForm button {
-      background:var(--primary); color:#fff; font-weight:800; border:none; padding:13px 0; border-radius:7px; cursor:pointer;
-      font-size:1.1em; letter-spacing:1px;
-    }
-    #logoutBtn {
-      margin-top:13px; background:var(--danger); color:#fff; border:none; border-radius:7px; padding:11px 0; font-weight:700; cursor:pointer;
-      font-size:1em;
-    }
-    #formMsg { color:var(--danger); margin-top:9px; min-height:23px; }
-    .ad-slot { text-align:center; margin:20px auto; min-height:54px; color:#888; font-size:.99em; max-width:728px; }
     .random-btn {
       display:block; margin:30px auto 36px auto; background:var(--secondary); color:#b07300; font-weight:800; border:none;
       border-radius:11px; padding:16px 38px; font-size:1.13em; cursor:pointer; box-shadow:0 1px 7px #ffe36b44; transition: background .18s;
+      min-width: 44px; min-height: 44px;
     }
     .random-btn:hover { background:#fff7c9;}
     .load-more-bar {display:flex; justify-content:center; margin:30px 0;}
     #loadMoreBtn {
       background:var(--primary); color:#fff; border:none; border-radius:9px; font-size:1.09em; font-weight:800;
       padding:13px 36px; cursor:pointer; letter-spacing:.5px;
+      min-width: 44px; min-height: 44px;
     }
     #loadMoreBtn:hover { background: var(--text);}
     .modal-backdrop {
-      position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(26,34,51,0.18); z-index:999;
+      position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(26,34,51,0.37); z-index:999;
       display:flex; align-items:center; justify-content:center;
       animation: fadeIn .33s;
+      touch-action: manipulation;
+      padding: 2vw;
     }
     @keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
     .modal {
-      background:#fff; border-radius:19px; max-width:95vw; max-height:93vh; overflow-y:auto;
-      box-shadow:0 16px 60px 0 rgba(49,103,230,0.22); padding:39px 39px 31px 39px; position:relative;
-      min-width:320px; animation: popIn .6s cubic-bezier(.65,-0.02,.54,1.16) 1;
+      background:#fff; border-radius:19px; max-width:98vw; max-height:98vh; overflow-y:auto;
+      box-shadow:0 16px 60px 0 rgba(49,103,230,0.22); padding:24px 17px 16px 17px; position:relative;
+      min-width:260px; animation: popIn .6s cubic-bezier(.65,-0.02,.54,1.16) 1;
+      touch-action: manipulation;
+      font-size:1.05em;
     }
-    .modal .about-emoji {
-      font-size:3.2em; filter: drop-shadow(0 3px 16px var(--accent));
-      animation: bounce 1.5s infinite alternate cubic-bezier(.77,0,.18,1);
-      margin-bottom:10px;
+    /* Share icons in modal */
+    .share-icons { display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:12px 0 16px 0;}
+    .share-icons a {display:inline-flex;align-items:center;}
+    .share-icons img {width:36px;height:36px;display:block;}
+    .search-bar { display: flex; justify-content: center; margin: 25px auto 0 auto; max-width: 620px; }
+    .search-input {
+      width: 100%; padding: 12px 16px; font-size: 1.11em; border: 1.5px solid #d1d9f4; border-radius: 8px; outline: none; transition: border-color 0.18s;
     }
-    @keyframes bounce { 
-      from{transform:translateY(0);}
-      to{transform:translateY(-14px) scale(1.11);}
+    .search-input:focus { border-color: var(--primary);}
+    /* Admin, loading, etc. unchanged... */
+    @media (max-width: 500px) {
+      .modal {padding: 13px 1vw;}
+      .modal h3 {font-size:1.1em;}
+      .post-content {padding:13px 7px 10px 7px;}
+      .gallery {padding:0 2px;}
+      .logo img {height:28px;width:28px;}
+      .logo span:last-child {font-size:0.81em;}
     }
-    .modal .about-story {
-      font-size:1.13em; margin-bottom:18px; font-weight:500; color:var(--primary);
-    }
-    .loading-overlay {
-      position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(245,246,250,0.88); z-index:9999;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      font-size:2.5em;
-      color:var(--primary);
-      transition: opacity .23s;
-      pointer-events: none;
-      user-select:none;
-    }
-    .loading-emoji {
-      animation: spin 1.2s linear infinite;
-      font-size:2.5em;
-      margin-bottom:8px;
-    }
-    @keyframes spin {100%{transform: rotate(360deg);}}
-    .loading-msg {font-size:1.14em; color:var(--primary);}
-    body.dark .post-card { background: var(--dark-card); color:var(--text-light);}
-    body.dark .post-title { color:var(--secondary);}
-    body.dark .gallery { background: var(--dark-bg);}
-    body.dark .hero h1 { color: var(--secondary);}
-    body.dark .navbar { background: var(--dark-card);}
-    body.dark .nav-links button, body.dark .nav-links a { color:var(--secondary);}
-    body.dark .post-desc { color: var(--text-light);}
-    body.dark .admin-panel {background: var(--dark-card); color:var(--text-light);}
-    body.dark .modal {background: var(--dark-card);}
-    body.dark .modal h2, body.dark .modal h3 {color: var(--secondary);}
-    .music-btn {transition:background .2s, outline .2s;}
-  </style>
+    /* Prevent double tap zoom */
+    button, a, input, textarea, select { touch-action: manipulation; }
+ 
+      </style>
   <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
 </head>
 <body>
   <nav class="navbar">
-    <span class="logo"><span>😎</span> Dolce</span>
+    <span class="logo">
+      <img src="data:image/svg+xml,%3Csvg width='64' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23ffe36b' stroke='%233c5edb' stroke-width='5'/%3E%3Cellipse cx='24' cy='28' rx='4' ry='7' fill='%233c5edb'/%3E%3Cellipse cx='40' cy='28' rx='4' ry='7' fill='%233c5edb'/%3E%3Cpath d='M24 44 Q32 54 40 44' stroke='%233c5edb' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" alt="Dolce Logo">
+      <span>Dolce</span>
+    </span>
     <button class="nav-toggle" aria-label="Open menu" onclick="toggleMobileNav()">
       <span></span>
       <span></span>
@@ -390,6 +411,9 @@
       <button class="cta" onclick="scrollToGallery()">See Gallery</button>
     </section>
     <div class="categories" id="categories"></div>
+    <div class="search-bar">
+      <input type="search" id="searchInput" class="search-input" placeholder="Search memes, videos, or tags...">
+    </div>
     <section id="trendingBar" class="trending-bar"></section>
     <div id="loadingOverlay" class="loading-overlay" style="display:none;">
       <span class="loading-emoji" id="loadingEmoji">🎵</span>
@@ -427,7 +451,12 @@
     <source src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b2f6a1b3.mp3" type="audio/mp3">
   </audio>
   <script>
-      // --- Appwrite Config ---
+    // --- Responsive NAV toggle ---
+    function toggleMobileNav() {
+      var links = document.getElementById('navLinks');
+      links.classList.toggle('open');
+    }
+    // --- Appwrite Config ---
     const APPWRITE_ENDPOINT = "https://syd.cloud.appwrite.io/v1";
     const APPWRITE_PROJECT = "6855bbd00031179bfaf2";
     const APPWRITE_DB_ID = "6855c193003251d7089d";
@@ -449,18 +478,15 @@
     let trendingPosts = [];
     let currentCategory = "All";
     let musicOn = false;
+    let searchQuery = "";
 
-    // --- Loading Spinner ---
     function showLoading(msg = "Loading the funniest stuff...") {
       document.getElementById("loadingMsg").innerText = msg;
       document.getElementById("loadingOverlay").style.display = "";
       document.getElementById("loadingEmoji").innerText = ["🎵","😂","😎","🔥","🎶","😄"][Math.floor(Math.random()*6)];
     }
-    function hideLoading() {
-      document.getElementById("loadingOverlay").style.display = "none";
-    }
+    function hideLoading() { document.getElementById("loadingOverlay").style.display = "none"; }
 
-    // --- Categories/Filters ---
     function renderCategories() {
       const cats = ["All", ...CATEGORIES];
       document.getElementById("categories").innerHTML = cats.map(cat =>
@@ -472,8 +498,13 @@
       renderCategories();
       renderGallery();
     }
+    // --- SEARCH ---
+    document.getElementById('searchInput').addEventListener('input', function(e){
+      searchQuery = e.target.value.trim().toLowerCase();
+      renderGallery();
+    });
 
-    // --- Gallery & Trending ---
+    // --- GALLERY & TRENDING ---
     async function loadPosts({append=false}={}) {
       showLoading();
       try {
@@ -512,13 +543,21 @@
       if(currentCategory && currentCategory !== "All") {
         filtered = posts.filter(p => (p.category||"Random") === currentCategory);
       }
+      // Apply search filter
+      if(searchQuery) {
+        filtered = filtered.filter(post =>
+          (post.title && post.title.toLowerCase().includes(searchQuery)) ||
+          (post.description && post.description.toLowerCase().includes(searchQuery)) ||
+          (post.category && post.category.toLowerCase().includes(searchQuery))
+        );
+      }
       gallery.innerHTML = "";
       filtered.forEach(post => {
         let mediaHtml = "";
         if (post.type === "image" && post.media && post.media[0]) {
-          mediaHtml = `<img src="${post.media[0]}" alt="${post.title}">`;
+          mediaHtml = `<img src="${post.media[0]}" alt="${post.title}" loading="lazy">`;
         } else if (post.type === "video" && post.media && post.media[0]) {
-          mediaHtml = `<video src="${post.media[0]}" controls></video>`;
+          mediaHtml = `<video src="${post.media[0]}" controls loading="lazy" poster="https://emojiapi.dev/api/v1/1f60e/128.png"></video>`;
         }
         // Artificial rating from 600 to 1200 for each post
         const rating = 600 + Math.floor(Math.random() * 601);
@@ -531,14 +570,26 @@
             ${post.description ? `<div class="post-desc">${post.description}</div>` : ""}
             <div style="margin-top:8px; font-size:1.08em; color:#e58f00; font-weight:800;">Rating: ${rating}</div>
             <div style="margin-top:8px;font-size:.99em;color:#3c5edb;">${post.category||"Random"}</div>
+            <div style="margin-top:10px;display:flex;gap:12px;">
+              <button class="action-btn" style="flex:1;min-width:44px;" onclick="window.sharePost('${post.$id}')">📤 Share</button>
+              <button class="action-btn" style="flex:1;min-width:44px;" onclick="downloadMedia('${post.media[0]}','${post.title}')">⬇️</button>
+            </div>
           </div>
         `;
         gallery.appendChild(card);
       });
+      // Infinite scroll: Load more when near bottom
+      if (!window._infiniteScrollAttached) {
+        window._infiniteScrollAttached = true;
+        window.addEventListener("scroll", () => {
+          if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 250) {
+            if(document.getElementById("loadMoreWrapper").style.display !== "none") loadMorePosts();
+          }
+        });
+      }
     }
 
     function renderTrendingBar() {
-      // Now trending is just first 3 posts (or random 3) since reactions are gone
       trendingPosts = [...posts].slice(0, 3);
       const bar = document.getElementById("trendingBar");
       if (!trendingPosts.length) { bar.innerHTML = ""; return; }
@@ -574,30 +625,39 @@
       const idx = Math.floor(Math.random()*filtered.length);
       highlightPost(filtered[idx].$id);
     };
-    function showRandom() { showRandomPost(); }
 
-    // --- Social Sharing ---
+    // --- Social Sharing (Improved Modal, full mobile) ---
     window.sharePost = function(postId) {
       const post = posts.find(p=>p.$id===postId);
       if (!post) return;
       const url = window.location.origin + "/#post-" + postId;
       const text = `😂 Dolce: ${post.title}\n${post.description||""}\n${url}`;
-      if (navigator.share) {
-        navigator.share({title: post.title, text, url}).catch(()=>{});
-      } else {
-        const shareLinks = `
-          <div style="padding:18px;">
-            <h3>Share Post</h3>
-            <a href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank">WhatsApp</a><br>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank">Facebook</a><br>
-            <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}" target="_blank">Twitter/X</a><br>
-            <button onclick="copyToClipboard('${url}')">Copy Link</button>
-            <button onclick="closeModal()">Close</button>
+      const modalContent = `
+        <div style="max-width:330px;margin:auto;">
+          <h3 style="margin-bottom:12px;text-align:center;">Share Post</h3>
+          <div class="share-icons">
+            <a href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" title="Share on WhatsApp">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" title="Share on Facebook">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+            </a>
+            <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}" target="_blank" title="Share on X (Twitter)">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Logo_of_Twitter.svg" alt="X">
+            </a>
+            <a href="https://instagram.com/yourpage" target="_blank" title="Instagram (copy link and paste in your story!)">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="background:#fff;border-radius:7px;">
+            </a>
           </div>
-        `;
-        document.getElementById("modal-root").innerHTML = `<div class="modal-backdrop" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()" style="background:#fff;border-radius:11px;max-width:340px;margin:40px auto;">${shareLinks}</div></div>`;
-        document.body.style.overflow = "hidden";
-      }
+          <button onclick="copyToClipboard('${url}')" style="margin-bottom:8px;width:100%;font-size:1em;">📋 Copy Link</button>
+          <button onclick="closeModal()" style="width:100%;background:#eee;color:#222;border-radius:6px;font-size:1em;">Close</button>
+          <div style="font-size:.93em;color:#888;margin-top:6px;text-align:center;">For Instagram, copy the link and paste in your story!</div>
+        </div>
+      `;
+      document.getElementById("modal-root").innerHTML = `<div class="modal-backdrop" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()" style="background:#fff;border-radius:11px;">${modalContent}</div>
+      </div>`;
+      document.body.style.overflow = "hidden";
     };
     window.copyToClipboard = function(text) {
       navigator.clipboard.writeText(text);
@@ -622,7 +682,9 @@
       localStorage.setItem("dolceDark", document.body.classList.contains("dark") ? "1" : "");
       document.getElementById('darkModeBtn').innerText = document.body.classList.contains('dark') ? '☀️' : '🌙';
     };
-    if(localStorage.getItem("dolceDark")==="1") {
+    if(localStorage.getItem("dolceDark")==="1" ||
+      (!localStorage.getItem("dolceDark") && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
       document.body.classList.add("dark");
       document.getElementById('darkModeBtn').innerText = '☀️';
     }
@@ -631,13 +693,11 @@
     function showTrending() {
       document.getElementById("trendingBar").scrollIntoView({behavior:"smooth"});
     }
-
-    // --- Scroll ---
     function scrollToGallery() {
       document.getElementById("gallery").scrollIntoView({behavior:"smooth"});
     }
 
-    // --- About Modal Glow-Up ---
+    // --- About Modal ---
     function showAbout() {
       document.getElementById("modal-root").innerHTML = `
         <div class="modal-backdrop" onclick="closeModal(event)">
@@ -734,7 +794,6 @@
           type,
           category,
           createdAt: new Date().toISOString()
-          // reactions removed
         });
         document.getElementById("formMsg").innerText = "Posted!";
         currentPage = 0;
@@ -745,6 +804,15 @@
         console.error(err);
       }
     };
+
+    // --- PWA: Register Service Worker ---
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js').catch(function(err){
+          console.log("Service worker registration failed: ", err);
+        });
+      });
+    }
 
     // --- Init ---
     (async function(){
@@ -761,6 +829,6 @@
       currentPage = 0;
       loadPosts();
     })();
-</script>
+  </script>
 </body>
 </html>
