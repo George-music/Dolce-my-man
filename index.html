@@ -4,10 +4,8 @@
   <meta charset="UTF-8" />
   <title>Dolce - Fun Gallery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23ffe36b' stroke='%233c5edb' stroke-width='5'/%3E%3Cellipse cx='24' cy='28' rx='4' ry='7' fill='%233c5edb'/%3E%3Cellipse cx='40' cy='28' rx='4' ry='7' fill='%233c5edb'/%3E%3Cpath d='M24 44 Q32 54 40 44' stroke='%233c5edb' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" type="image/svg+xml">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23ffe36b' stroke='%233c5edb' stroke-width='5'/%3E%3Cellipse cx='24' cy='28' rx='4' ry='7' fill='%233c5edb'/%3E%3Cellipse cx='40' cy='28' rx='4' ry='7' fill='%233c5edb'/%3E%3Cpath d='M24 44 Q32 54 40 44' stroke='%233c5edb' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" type="image/svg+xml">
   <meta name="theme-color" content="#3c5edb">
-  <!-- Social & App Meta -->
   <meta property="og:title" content="Dolce Fun Gallery">
   <meta property="og:description" content="The funniest WhatsApp statuses and memes, now online!">
   <meta property="og:image" content="https://emojiapi.dev/api/v1/1f60e/128.png">
@@ -21,36 +19,37 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
+    /* -- SCROLLBAR TWEAKS -- */
+    html { scrollbar-width: thin; scrollbar-color: #375afc #f9fbff;}
+    ::-webkit-scrollbar {width: 9px;background: #f9fbff;}
+    ::-webkit-scrollbar-thumb {background: #375afc;border-radius: 7px;}
+    /* --- BASE --- */
     :root {
       --primary: #375afc;
       --secondary: #ffe36b;
-      --accent: #ffefb4;
       --danger: #e53935;
       --bg: #f9fbff;
       --dark-bg: #18192e;
-      --dark-card: #22243d;
+      --dark-card: #23243b;
       --text: #1a2233;
       --text-light: #f5f8ff;
       --shadow: 0 8px 38px #3c5edb13;
-      --music: #ffd358;
-      --admin-bg: #f1f6ff;
-      --admin-dark-bg: #23243b;
     }
     html, body { margin:0; padding:0; min-height:100vh; }
-    html { box-sizing: border-box; -webkit-tap-highlight-color: transparent;}
-    *, *:before, *:after { box-sizing: inherit; }
     body {
       font-family: 'Inter', Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      overscroll-behavior-y: none;
       transition: background .3s, color .3s;
+      overscroll-behavior-y: none;
+      scroll-behavior: smooth;
     }
     body.dark {
       background: var(--dark-bg);
       color: var(--text-light);
     }
+    /* --- NAVBAR --- */
     .navbar {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -65,37 +64,28 @@
       width: 100vw;
       box-shadow: 0 3px 28px #3c5edb22;
       user-select: none;
-      touch-action: manipulation;
     }
     .logo {
       display: flex;
       align-items: center;
-      font-size: 1.5em;
+      font-size: 1.45em;
       font-weight: 900;
-      gap: 11px;
-      letter-spacing: 1.2px;
-      min-width: 100px;
-      user-select: none;
+      gap: 10px;
+      min-width: 90px;
     }
     .logo svg {
-      height: 38px; width: 38px; display:inline-block; border-radius: 50%;
+      height: 38px; width: 38px; border-radius: 50%;
       background: var(--secondary);
       box-shadow: 0 1px 7px #fff5;
       padding: 2px;
+      display: inline-block;
     }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      transition: max-height 0.3s;
-    }
+    .nav-links { display: flex; align-items: center; gap: 0; }
     .nav-links button, .nav-links a {
       background: none; border: none; color: #fff; font-size: 1.08em; margin-left: 12px; cursor: pointer;
       font-weight:600; padding: 8px 16px; border-radius:7px; transition: background .2s, color .2s;
-      text-decoration: none;
-      display: inline-block;
+      text-decoration: none; display: inline-block;
       min-width: 44px; min-height: 44px;
-      touch-action: manipulation;
     }
     .nav-links button:hover, .nav-links button.active, .nav-links a:hover {
       background: #fff; color: var(--primary);
@@ -141,33 +131,10 @@
       border-radius: 2px;
       transition: 0.3s;
     }
-    @media (max-width: 800px) {
-      .gallery {grid-template-columns:1fr;}
-      .hero {padding:20px 5vw;}
-      .admin-panel {width:98vw;}
-      .modal {padding:20px 5vw 18px 5vw;}
-    }
     @media (max-width: 700px) {
-      .navbar {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 0;
-        top: 0;
-        height: auto;
-        border-radius: 0;
-        width: 100vw;
-        max-width: 100vw;
-      }
-      .logo {
-        justify-content: center;
-        padding: 11px 0;
-      }
-      .nav-toggle {
-        display: flex;
-        position: absolute;
-        right: 16px;
-        top: 12px;
-      }
+      .navbar {flex-direction:column;align-items:stretch;padding:0;height:auto;}
+      .logo {justify-content:center;padding:11px 0;}
+      .nav-toggle {display:flex;position:absolute;right:16px;top:12px;}
       .nav-links {
         flex-direction: column;
         align-items: stretch;
@@ -204,26 +171,10 @@
       }
       body { padding-top: 60px;}
       .gallery {grid-template-columns:1fr;}
-      .hero {padding:20px 5vw;}
     }
-    @media (max-width:600px) {
-      .main { padding:0 2px;}
-      .gallery {grid-template-columns:1fr;}
-      .post-content {padding:13px 7px 10px 7px;}
-      .hero { padding:12px 2vw;}
-      .hero h1 { font-size:1.3em;}
-      .modal {padding:12px 2vw 10px 2vw; min-width:unset;}
-      .modal h2 { font-size:1.18em;}
-      .admin-panel {width:99vw; padding:13px 2vw;}
-      .random-btn {padding:12px 10vw;}
-    }
-    .gallery {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(285px,1fr)); gap:24px;
-      max-width:1120px; margin:38px auto 40px auto; padding:0 8px;
-      width:100%;
-    }
+    /* --- HERO --- */
     .hero {
-      max-width: 900px; margin: 70px auto 30px auto; text-align: center; padding: 40px 16px 36px 16px;
+      max-width: 900px; margin: 80px auto 30px auto; text-align: center; padding: 40px 16px 36px 16px;
       background: linear-gradient(108deg,#f9fbff 69%, #d7e1ff 100%);
       border-radius: 17px; box-shadow: var(--shadow);
       display:flex; flex-direction:column; align-items:center;
@@ -233,15 +184,6 @@
       font-size: 2.25em; color: var(--primary); font-weight: 800; letter-spacing: 1.2px;
       margin-bottom: 10px; line-height:1.13;
       text-shadow: 0 3px 16px #e3ebff;
-      animation: popIn .7s cubic-bezier(.65,-0.02,.54,1.16) 1;
-    }
-    @keyframes popIn {
-      0% {transform:scale(.8) translateY(30px); opacity:0;}
-      80%{transform:scale(1.04) translateY(-2px);}
-      100% {transform:scale(1) translateY(0); opacity:1;}
-    }
-    .hero p {
-      color: #333; font-size: 1.14em; margin-bottom: 18px; font-weight: 500;
     }
     .hero .cta {
       margin-top: 6px; background: var(--primary); color: #fff; font-weight:700; border:none;
@@ -249,12 +191,8 @@
       transition: background .2s, color .2s;
       min-width: 44px; min-height: 44px;
     }
-    .hero .cta:hover { background: var(--text); color:var(--secondary);}
-    .categories {
-      display: flex; gap:12px; align-items:center; justify-content:center;
-      margin:24px auto 0 auto; flex-wrap:wrap; max-width:800px;
-      overflow-x: auto;
-    }
+    /* --- CATEGORIES --- */
+    .categories { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:18px auto 18px auto;}
     .cat-btn {
       background: #fff; border:1.6px solid var(--primary); color: var(--primary); border-radius:21px;
       font-size: 1.01em; font-weight:700; padding:6px 22px; cursor:pointer;
@@ -262,10 +200,17 @@
       box-shadow: 0 1px 7px #3c5edb14;
       margin-bottom: 8px;
       white-space: nowrap;
-      touch-action: manipulation;
-      min-width: 44px; min-height: 44px;
     }
     .cat-btn.active, .cat-btn:hover { background: var(--primary); color: #fff;}
+    /* --- SEARCH --- */
+    .search-bar { display: flex; justify-content: center; margin: 25px auto 0 auto; max-width: 620px; }
+    .search-input {
+      width: 100%; padding: 12px 16px; font-size: 1.11em; border: 1.5px solid #d1d9f4; border-radius: 8px; outline: none; transition: border-color 0.18s;
+      background:#fafdff;
+      color:var(--text);
+    }
+    .search-input:focus { border-color: var(--primary);}
+    /* --- TRENDING --- */
     .trending-bar {
       display: flex; gap:10px; align-items:center;
       background: var(--secondary); color: #b07300; font-weight:700;
@@ -275,6 +220,12 @@
     }
     .trending-bar span { margin-right:10px; }
     .trending-bar a { color:#c08c00; text-decoration:underline;}
+    /* --- GALLERY --- */
+    .gallery {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(285px,1fr)); gap:24px;
+      max-width:1120px; margin:80px auto 40px auto; padding:0 8px;
+      width:100%;
+    }
     .post-card {
       background: #fff; border-radius:16px; box-shadow: var(--shadow);
       overflow:hidden; display:flex; flex-direction:column; position:relative;
@@ -282,14 +233,9 @@
       transition: box-shadow .18s cubic-bezier(.77,0,.18,1), transform .18s cubic-bezier(.77,0,.18,1);
       min-width: 0;
       border: 1.5px solid #f4f8ff;
+      margin-bottom: 16px;
     }
     .post-card:hover { box-shadow:0 12px 38px #3c5edb18; transform:scale(1.018) rotateZ(-0.8deg);}
-    .post-card:active { transform:scale(.98);}
-    .post-card.dark { background: var(--dark-card);}
-    .post-media {
-      width:100%; background: #f3f6ff; display: flex; align-items:center; justify-content:center; min-height: 190px;
-      position:relative; overflow:hidden;
-    }
     .post-media img, .post-media video {
       max-width:100%; max-height:260px; border-radius:12px; margin: 0 auto; display:block; box-shadow:0 2px 9px #3c5edb12;
       transition:transform .14s cubic-bezier(.77,0,.18,1);
@@ -299,43 +245,39 @@
       aspect-ratio: 16/9;
       background: #e3e3e3;
     }
-    .post-card:hover .post-media img, .post-card:hover .post-media video { transform:scale(1.036);}
-    .post-media video { background:#222; }
     .post-content {
       padding: 16px 14px 12px 14px;
       position:relative;
       flex:1;
       display:flex;
       flex-direction:column;
-      justify-content:space-between;
-      gap:8px;
+      gap:7px;
       background:inherit;
     }
     .post-title {
       font-weight:800;
       font-size:1.13em;
       color:var(--primary);
-      margin-bottom:5px;
+      margin-bottom:2px;
       line-height:1.24;
       word-break:break-word;
     }
     .post-desc {
       font-size:1.04em;
       color:#444;
-      margin-bottom:9px;
-      margin-top:3px;
-      line-height:1.45;
-      max-height: 3.1em;
+      margin-bottom:2px;
+      margin-top:1px;
+      line-height:1.4;
+      max-height: 3.5em;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: pre-line;
     }
-    .dark .post-desc { color: #d5d9f7;}
     .post-footer {
       display:flex;
       align-items:center;
       justify-content:space-between;
-      margin-top:7px;
+      margin-top:3px;
     }
     .post-footer .post-category {
       font-size:.99em;
@@ -358,7 +300,7 @@
     .post-actions {
       display:flex;
       gap:12px;
-      margin-top:11px;
+      margin-top:7px;
       width:100%;
     }
     .action-btn {
@@ -395,43 +337,17 @@
       min-width: 44px; min-height: 44px;
     }
     #loadMoreBtn:hover { background: var(--text);}
-    .modal-backdrop {
-      position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(26,34,51,0.37); z-index:999;
-      display:flex; align-items:center; justify-content:center;
-      animation: fadeIn .33s;
-      touch-action: manipulation;
-      padding: 2vw;
-    }
-    @keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
-    .modal {
-      background:#fff; border-radius:19px; max-width:98vw; max-height:98vh; overflow-y:auto;
-      box-shadow:0 16px 60px 0 rgba(49,103,230,0.22); padding:24px 17px 16px 17px; position:relative;
-      min-width:260px; animation: popIn .6s cubic-bezier(.65,-0.02,.54,1.16) 1;
-      touch-action: manipulation;
-      font-size:1.07em;
-    }
-    .share-icons { display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:12px 0 16px 0;}
-    .share-icons a {display:inline-flex;align-items:center;}
-    .share-icons img {width:36px;height:36px;display:block;}
-    .search-bar { display: flex; justify-content: center; margin: 25px auto 0 auto; max-width: 620px; }
-    .search-input {
-      width: 100%; padding: 12px 16px; font-size: 1.11em; border: 1.5px solid #d1d9f4; border-radius: 8px; outline: none; transition: border-color 0.18s;
-      background:#fafdff;
-      color:var(--text);
-    }
-    .search-input:focus { border-color: var(--primary);}
+    /* --- ADMIN PANEL --- */
     .admin-panel {
       display:none;
       max-width:440px;
       margin:36px auto 0 auto;
-      background: var(--admin-bg);
+      background: #f1f6ff;
       color: var(--primary);
       padding:40px 26px 31px 26px;
       border-radius:17px;
       box-shadow:0 4px 18px #3c5edb13;
       border: 1.5px solid var(--primary);
-      position:relative;
-      z-index:10;
     }
     .admin-panel.active { display:block; }
     .admin-panel h2 {
@@ -465,29 +381,32 @@
       width:100%;
     }
     #formMsg { color:var(--danger); margin-top:9px; min-height:23px; }
-    .dark .admin-panel {
-      background: var(--admin-dark-bg);
-      color: var(--text-light);
-      border: 1.5px solid #4f6fff;
+    /* --- MODALS, FOOTER, DARK MODE, ETC --- */
+    .footer {
+      background: var(--primary);
+      color: #fff;
+      font-size: .97em;
+      padding: 25px 0 15px 0;
+      text-align: center;
+      margin-top: 32px;
+      border-top: 2px solid #3146b4;
     }
-    .dark #postForm input, .dark #postForm textarea, .dark #postForm select {
-      background: #23243b;
-      color: var(--text-light);
-      border:1.5px solid #4f6fff;
+    .footer a {
+      color: #ffe36b;
+      margin: 0 10px;
+      text-decoration: underline;
+      transition: color .2s;
+      font-weight: 600;
     }
-    .dark #postForm input:focus, .dark #postForm textarea:focus, .dark #postForm select:focus {
-      background: #23243b;
+    .footer a:hover { color: #fff; }
+    .footer .designed {
+      margin-top: 11px;
+      display:block;
+      font-size: .93em;
+      color: #d1e1ff;
+      letter-spacing: .04em;
     }
-    @media (max-width: 500px) {
-      .modal {padding: 13px 1vw;}
-      .modal h3 {font-size:1.1em;}
-      .post-content {padding:13px 7px 10px 7px;}
-      .gallery {padding:0 2px;}
-      .logo svg {height:28px;width:28px;}
-      .logo span:last-child {font-size:0.85em;}
-      .admin-panel { padding:18px 4vw;}
-    }
-    button, a, input, textarea, select { touch-action: manipulation; }
+    .footer svg {vertical-align:middle;margin-right:3px;}
     body.dark, .dark { color:var(--text-light);}
     body.dark .post-card, .post-card.dark { background: var(--dark-card); border: 1.5px solid #273074;}
     body.dark .gallery { background: var(--dark-bg);}
@@ -496,22 +415,36 @@
     body.dark .navbar { background: #23243b;}
     body.dark .nav-links button, body.dark .nav-links a { color:var(--secondary);}
     body.dark .post-desc { color: #d5d9f7;}
-    body.dark .admin-panel {background: var(--admin-dark-bg); color:var(--text-light);}
-    body.dark .modal {background: var(--dark-card);}
-    body.dark .modal h2, body.dark .modal h3 {color: var(--secondary);}
-    body.dark .search-input { background: #23243b; color: #e3e7fa; }
-    body.dark .cat-btn {background:#18192e;color:var(--secondary);}
-    body.dark .cat-btn.active,.dark .cat-btn.active {background:var(--primary);color:#fff;}
+    body.dark .admin-panel {background: var(--dark-card); color:var(--text-light);}
+    /* --- MODAL --- */
+    .modal-backdrop {
+      position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(26,34,51,0.37); z-index:999;
+      display:flex; align-items:center; justify-content:center;
+      animation: fadeIn .33s;
+      touch-action: manipulation;
+      padding: 2vw;
+    }
+    @keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
+    .modal {
+      background:#fff; border-radius:19px; max-width:98vw; max-height:98vh; overflow-y:auto;
+      box-shadow:0 16px 60px 0 rgba(49,103,230,0.22); padding:24px 17px 16px 17px; position:relative;
+      min-width:260px; animation: popIn .6s cubic-bezier(.65,-0.02,.54,1.16) 1;
+      touch-action: manipulation;
+      font-size:1.07em;
+    }
+    .share-icons { display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:12px 0 16px 0;}
+    .share-icons a {display:inline-flex;align-items:center;}
+    .share-icons img {width:36px;height:36px;display:block;}
   </style>
   <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
 </head>
 <body>
   <nav class="navbar">
     <span class="logo">
-      <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#ffe36b" stroke="#3c5edb" stroke-width="5"/><ellipse cx="24" cy="28" rx="4" ry="7" fill="#3c5edb"/><ellipse cx="40" cy="28" rx="4" ry="7" fill="#3c5edb"/><path d="M24 44 Q32 54 40 44" stroke="#3c5edb" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+      <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#ffe36b" stroke="#375afc" stroke-width="5"/><ellipse cx="24" cy="28" rx="4" ry="7" fill="#375afc"/><ellipse cx="40" cy="28" rx="4" ry="7" fill="#375afc"/><path d="M24 44 Q32 54 40 44" stroke="#375afc" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
       <span>Dolce</span>
     </span>
-    <button class="nav-toggle" aria-label="Open menu" onclick="toggleMobileNav()">
+    <button class="nav-toggle" aria-label="Open menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
       <span></span>
       <span></span>
       <span></span>
@@ -526,7 +459,6 @@
       <button id="adminBtn" onclick="showAdminPanel()">Admin</button>
     </span>
   </nav>
-  <div class="ad-slot ad-top">[Ad banner here]</div>
   <main>
     <section class="hero">
       <h1>Welcome to Dolce!</h1>
@@ -574,11 +506,41 @@
   <audio id="bgMusic" loop preload="auto">
     <source src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b2f6a1b3.mp3" type="audio/mp3">
   </audio>
+  <footer class="footer">
+    <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>|
+    <a href="/terms.html" target="_blank">Terms &amp; Conditions</a>
+    <span class="designed">
+      Designed by 
+      <a href="https://supremeamer.com" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ffe36b" stroke="#375afc" stroke-width="2"/><ellipse cx="9" cy="11" rx="1.3" ry="2" fill="#375afc"/><ellipse cx="15" cy="11" rx="1.3" ry="2" fill="#375afc"/><path d="M8 16 Q12 20 16 16" stroke="#375afc" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        Supremeamer
+      </a>
+    </span>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
   <script>
-    function toggleMobileNav() {
-      var links = document.getElementById('navLinks');
-      links.classList.toggle('open');
+      // --- Responsive NAV toggle ---
+    function scrollToGallery() {
+      document.getElementById("gallery").scrollIntoView({behavior:"smooth"});
     }
+    function showTrending() {
+      document.getElementById("trendingBar").scrollIntoView({behavior:"smooth"});
+    }
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("dolceDark", document.body.classList.contains("dark") ? "1" : "");
+      document.getElementById('darkModeBtn').innerText = document.body.classList.contains('dark') ? '☀️' : '🌙';
+      renderGallery();
+    }
+    if(localStorage.getItem("dolceDark")==="1" ||
+      (!localStorage.getItem("dolceDark") && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      document.body.classList.add("dark");
+      window.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('darkModeBtn').innerText = '☀️';
+      });
+    }
+    // --- Appwrite Config ---
     const APPWRITE_ENDPOINT = "https://syd.cloud.appwrite.io/v1";
     const APPWRITE_PROJECT = "6855bbd00031179bfaf2";
     const APPWRITE_DB_ID = "6855c193003251d7089d";
@@ -597,15 +559,14 @@
     let isAdmin = false;
     let trendingPosts = [];
     let currentCategory = "All";
-    let musicOn = false;
     let searchQuery = "";
 
     function showLoading(msg = "Loading the funniest stuff...") {
-      document.getElementById("loadingMsg").innerText = msg;
-      document.getElementById("loadingOverlay").style.display = "";
-      document.getElementById("loadingEmoji").innerText = ["🎵","😂","😎","🔥","🎶","😄"][Math.floor(Math.random()*6)];
+      if(document.getElementById("loadingMsg")) document.getElementById("loadingMsg").innerText = msg;
+      if(document.getElementById("loadingOverlay")) document.getElementById("loadingOverlay").style.display = "";
+      if(document.getElementById("loadingEmoji")) document.getElementById("loadingEmoji").innerText = ["🎵","😂","😎","🔥","🎶","😄"][Math.floor(Math.random()*6)];
     }
-    function hideLoading() { document.getElementById("loadingOverlay").style.display = "none"; }
+    function hideLoading() { if(document.getElementById("loadingOverlay")) document.getElementById("loadingOverlay").style.display = "none"; }
 
     function renderCategories() {
       const cats = ["All", ...CATEGORIES];
@@ -741,7 +702,6 @@
     window.sharePost = function(postId) {
       const post = posts.find(p=>p.$id===postId);
       if (!post) return;
-      // Use canonical page url for share, not hash, for better compatibility
       const url = window.location.origin + window.location.pathname + "?id=" + encodeURIComponent(postId);
       const text = `😂 Dolce: ${post.title}\n${post.description||""}\n${url}`;
       const modalContent = `
@@ -776,7 +736,6 @@
       alert("Link copied!");
       closeModal();
     };
-
     window.downloadMedia = function(url, title) {
       const a = document.createElement("a");
       a.href = url;
@@ -785,27 +744,6 @@
       a.click();
       setTimeout(()=>a.remove(),500);
     };
-
-    window.toggleDarkMode = function() {
-      document.body.classList.toggle("dark");
-      renderGallery();
-      localStorage.setItem("dolceDark", document.body.classList.contains("dark") ? "1" : "");
-      document.getElementById('darkModeBtn').innerText = document.body.classList.contains('dark') ? '☀️' : '🌙';
-    };
-    if(localStorage.getItem("dolceDark")==="1" ||
-      (!localStorage.getItem("dolceDark") && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      document.body.classList.add("dark");
-      document.getElementById('darkModeBtn').innerText = '☀️';
-    }
-
-    function showTrending() {
-      document.getElementById("trendingBar").scrollIntoView({behavior:"smooth"});
-    }
-    function scrollToGallery() {
-      document.getElementById("gallery").scrollIntoView({behavior:"smooth"});
-    }
-
     function showAbout() {
       document.getElementById("modal-root").innerHTML = `
         <div class="modal-backdrop" onclick="closeModal(event)">
@@ -824,7 +762,6 @@
       document.getElementById("modal-root").innerHTML = "";
       document.body.style.overflow = "";
     }
-
     function showAdminPanel() {
       if (isAdmin) {
         document.getElementById("adminPanel").classList.add("active");
@@ -865,13 +802,11 @@
         }
       };
     }
-
     async function logout() {
       try { await account.deleteSession("current"); } catch {}
       isAdmin = false;
       document.getElementById("adminPanel").classList.remove("active");
     }
-
     document.getElementById("postForm").onsubmit = async function(e) {
       e.preventDefault();
       const title = document.getElementById("postTitle").value.trim();
@@ -910,6 +845,7 @@
       }
     };
 
+    // PWA Service Worker (optional, as in previous completions)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('/service-worker.js').catch(function(err){
@@ -932,6 +868,6 @@
       currentPage = 0;
       loadPosts();
     })();
-  </script>
+     </script>
 </body>
 </html>
